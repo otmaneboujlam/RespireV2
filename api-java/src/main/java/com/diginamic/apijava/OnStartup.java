@@ -1,5 +1,6 @@
 package com.diginamic.apijava;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -12,6 +13,9 @@ import com.diginamic.apijava.repository.RoleRepository;
 
 @Component
 public class OnStartup {
+	
+	@Value("${spring.jpa.hibernate.ddl-auto}")
+	private String jpaSettings;
 
 	private RoleRepository roleRepository;
 	private AccountRepository accountRepository;
@@ -27,31 +31,47 @@ public class OnStartup {
 	@EventListener(ContextRefreshedEvent.class)
 	public void init() {
 		
-		// Créer un compte de test, email = otmane.boujlam@gmail.com password = otmane
-//		Account testAccount = new Account();
-//		testAccount.setEmail("otmane.boujlam@gmail.com");
-//		testAccount.setFirstname("Otmane");
-//		testAccount.setLastname("Boujlam");
-//		testAccount.setPassword(passwordEncoder.encode("otmane"));
-//		accountRepository.save(testAccount);
-		
-				
-		if(roleRepository.findFirstByName("ROLE_USER").isEmpty()) {
+		if("create".equals(jpaSettings)) {
+			
 			Role user = new Role();
 			user.setName("ROLE_USER");
 			roleRepository.save(user);
-		}
-		
-		if(roleRepository.findFirstByName("ROLE_MANAGER").isEmpty()) {
+			
 			Role manager = new Role();
 			manager.setName("ROLE_MANAGER");
 			roleRepository.save(manager);
-		}
-		
-		if(roleRepository.findFirstByName("ROLE_ADMIN").isEmpty()) {
+			
 			Role admin = new Role();
 			admin.setName("ROLE_ADMIN");
 			roleRepository.save(admin);
+			
+			Account adminAccount = new Account();
+			adminAccount.setEmail("admin@respire.com");
+			adminAccount.setFirstname("admin");
+			adminAccount.setLastname("admin");
+			adminAccount.setPassword(passwordEncoder.encode("admin"));
+			adminAccount.getRoles().add(user);
+			adminAccount.getRoles().add(manager);
+			adminAccount.getRoles().add(admin);
+			accountRepository.save(adminAccount);
+			
+			Account managerAccount = new Account();
+			managerAccount.setEmail("manager@respire.com");
+			managerAccount.setFirstname("manager");
+			managerAccount.setLastname("manager");
+			managerAccount.setPassword(passwordEncoder.encode("manager"));
+			managerAccount.getRoles().add(user);
+			managerAccount.getRoles().add(manager);
+			accountRepository.save(managerAccount);
+			
+			Account userAccount = new Account();
+			userAccount.setEmail("user@respire.com");
+			userAccount.setFirstname("user");
+			userAccount.setLastname("user");
+			userAccount.setPassword(passwordEncoder.encode("user"));
+			userAccount.getRoles().add(user);
+			accountRepository.save(userAccount);
+			
 		}
 		
 	}

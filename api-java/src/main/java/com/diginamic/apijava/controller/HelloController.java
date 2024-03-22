@@ -11,10 +11,22 @@ import org.springframework.web.bind.annotation.RestController;
 @EnableMethodSecurity(securedEnabled = true)
 public class HelloController {
 	
-	//@Secured({"ROLE_ADMIN", "ROLE_MANAGER", "ROLE_USER"})
-	@GetMapping("/hello")
-	public String hello() {
-		return "hello";
+	@Secured({"ROLE_ADMIN", "ROLE_MANAGER", "ROLE_USER"})
+	@GetMapping("/user")
+	public String helloUser() {
+		return "Hello admin or manager or user";
+	}
+	
+	@Secured({"ROLE_ADMIN", "ROLE_MANAGER"})
+	@GetMapping("/manager")
+	public String helloManager() {
+		return "Hello admin or manager";
+	}
+	
+	@Secured({"ROLE_ADMIN"})
+	@GetMapping("/admin")
+	public String helloAdmin() {
+		return "Hello admin";
 	}
 
 }
