@@ -106,6 +106,7 @@ public class OnStartup {
 			userAccount.setFirstname("user");
 			userAccount.setLastname("user");
 			userAccount.setPassword(passwordEncoder.encode("user"));
+			userAccount.setSuperior(managerAccount);
 			userAccount.setOrganization(diginamicOrganization);
 			userAccount.setContract(standardContract);
 			userAccount.setDepartment(devDepartment);

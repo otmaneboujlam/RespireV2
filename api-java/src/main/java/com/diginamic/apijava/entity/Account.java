@@ -54,6 +54,9 @@ public class Account {
 	@ManyToOne
 	@JoinColumn(nullable = true)
 	private Organization organization;
+	
+	@ManyToOne
+	private Account superior;
 
 	public Integer getId() {
 		return id;
@@ -141,6 +144,14 @@ public class Account {
 
 	public void setOrganization(Organization organization) {
 		this.organization = organization;
+	}
+
+	public Account getSuperior() {
+		return superior;
+	}
+
+	public void setSuperior(Account superior) {
+		this.superior = superior;
 	}
 	
 }
