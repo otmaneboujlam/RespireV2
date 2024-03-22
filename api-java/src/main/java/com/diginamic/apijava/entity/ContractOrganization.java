@@ -23,7 +23,7 @@ public class ContractOrganization {
 	private Integer publicHoliday;
 	
 	@Column(nullable = false)
-	private Integer employerRTT;
+	private Integer employerRtt;
 	
 	@OneToMany(mappedBy = "contractOrganization")
 	@JsonIgnore
@@ -45,12 +45,12 @@ public class ContractOrganization {
 		this.publicHoliday = publicHoliday;
 	}
 
-	public Integer getEmployerRTT() {
-		return employerRTT;
+	public Integer getEmployerRtt() {
+		return employerRtt;
 	}
 
-	public void setEmployerRTT(Integer employerRTT) {
-		this.employerRTT = employerRTT;
+	public void setEmployerRtt(Integer employerRtt) {
+		this.employerRtt = employerRtt;
 	}
 
 	public List<Organization> getOrganizations() {

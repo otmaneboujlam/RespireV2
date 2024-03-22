@@ -23,7 +23,7 @@ public class Contract {
 	private Float paidHoliday;
 	
 	@Column(nullable = false)
-	private Integer employeeRTT;
+	private Integer employeeRtt;
 	
 	@OneToMany(mappedBy = "contract")
 	@JsonIgnore
@@ -45,12 +45,12 @@ public class Contract {
 		this.paidHoliday = paidHoliday;
 	}
 
-	public Integer getEmployeeRTT() {
-		return employeeRTT;
+	public Integer getEmployeeRtt() {
+		return employeeRtt;
 	}
 
-	public void setEmployeeRTT(Integer employeeRTT) {
-		this.employeeRTT = employeeRTT;
+	public void setEmployeeRtt(Integer employeeRtt) {
+		this.employeeRtt = employeeRtt;
 	}
 
 	public List<Account> getAccounts() {
