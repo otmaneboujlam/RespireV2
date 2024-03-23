@@ -1,9 +1,15 @@
 package com.diginamic.apijava.entity;
 
-import java.util.Date;
+import java.time.LocalDate;
+
+import com.diginamic.apijava.enums.AbsenceStatus;
+import com.diginamic.apijava.enums.AbsenceType;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -18,23 +24,23 @@ public class Absence {
 	private Integer id;
 	
 	@Column(nullable = false)
-	private Date startDate;
+	private LocalDate startDate;
 	
 	@Column(nullable = false)
-	private Date endDate;
+	private LocalDate endDate;
 	
 	private String reason;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(nullable = false)
 	private Account account;
 	
-	@ManyToOne
-	@JoinColumn(nullable = false)
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
 	private AbsenceStatus absenceStatus;
 	
-	@ManyToOne
-	@JoinColumn(nullable = false)
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
 	private AbsenceType absenceType;
 
 	public Integer getId() {
@@ -45,19 +51,19 @@ public class Absence {
 		this.id = id;
 	}
 
-	public Date getStartDate() {
+	public LocalDate getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(Date startDate) {
+	public void setStartDate(LocalDate startDate) {
 		this.startDate = startDate;
 	}
 
-	public Date getEndDate() {
+	public LocalDate getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(Date endDate) {
+	public void setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
 	}
 
@@ -77,20 +83,20 @@ public class Absence {
 		this.account = account;
 	}
 
-	public AbsenceStatus getAbsenceStatus() {
-		return absenceStatus;
-	}
-
-	public void setAbsenceStatus(AbsenceStatus absenceStatus) {
-		this.absenceStatus = absenceStatus;
-	}
-
 	public AbsenceType getAbsenceType() {
 		return absenceType;
 	}
 
 	public void setAbsenceType(AbsenceType absenceType) {
 		this.absenceType = absenceType;
+	}
+
+	public AbsenceStatus getAbsenceStatus() {
+		return absenceStatus;
+	}
+
+	public void setAbsenceStatusE(AbsenceStatus absenceStatus) {
+		this.absenceStatus = absenceStatus;
 	}
 
 }

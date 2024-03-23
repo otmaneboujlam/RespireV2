@@ -25,13 +25,13 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("api/signin")
-public class SessionCtrl {
+public class SessionController {
 	
 	private JWTConfig jwtConfig;
 	private AccountRepository activeUserRepository;
 	private PasswordEncoder passwordEncoder;
 	
-	public SessionCtrl(JWTConfig jwtConfig, AccountRepository activeUserRepository, PasswordEncoder passwordEncoder) {
+	public SessionController(JWTConfig jwtConfig, AccountRepository activeUserRepository, PasswordEncoder passwordEncoder) {
 		this.jwtConfig = jwtConfig;
 		this.activeUserRepository = activeUserRepository;
 		this.passwordEncoder = passwordEncoder;

@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -25,7 +26,7 @@ public class Contract {
 	@Column(nullable = false)
 	private Integer employeeRtt;
 	
-	@OneToMany(mappedBy = "contract")
+	@OneToMany(mappedBy = "contract", fetch = FetchType.LAZY)
 	@JsonIgnore
 	private List<Account> accounts = new ArrayList<Account>();
 
