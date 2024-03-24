@@ -11,8 +11,6 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
 @Entity
@@ -25,13 +23,15 @@ public class Organization {
 	@Column(nullable = false)
 	private String name;
 	
+	@Column(nullable = false)
+	private Integer publicHoliday;
+	
+	@Column(nullable = false)
+	private Integer employerRtt;
+	
 	@OneToMany(mappedBy = "organization", fetch = FetchType.LAZY)
 	@JsonIgnore
 	private List<Account> accounts = new ArrayList<Account>();
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(nullable = true)
-	private ContractOrganization contractOrganization;
 	
 	@OneToMany(mappedBy = "organization", fetch = FetchType.LAZY)
 	@JsonIgnore
@@ -61,20 +61,28 @@ public class Organization {
 		this.accounts = accounts;
 	}
 
-	public ContractOrganization getContractOrganization() {
-		return contractOrganization;
-	}
-
-	public void setContractOrganization(ContractOrganization contractOrganization) {
-		this.contractOrganization = contractOrganization;
-	}
-
 	public List<AbsenceOrganization> getAbsencesOrganization() {
 		return absencesOrganization;
 	}
 
 	public void setAbsencesOrganization(List<AbsenceOrganization> absencesOrganization) {
 		this.absencesOrganization = absencesOrganization;
+	}
+
+	public Integer getPublicHoliday() {
+		return publicHoliday;
+	}
+
+	public void setPublicHoliday(Integer publicHoliday) {
+		this.publicHoliday = publicHoliday;
+	}
+
+	public Integer getEmployerRtt() {
+		return employerRtt;
+	}
+
+	public void setEmployerRtt(Integer employerRtt) {
+		this.employerRtt = employerRtt;
 	}
 	
 }

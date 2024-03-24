@@ -48,9 +48,11 @@ public class Account {
 	@JoinColumn(nullable = true)
 	private Department department;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(nullable = true)
-	private Contract contract;
+	@Column(nullable = false)
+	private Float paidHoliday;
+	
+	@Column(nullable = false)
+	private Integer employeeRtt;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(nullable = true)
@@ -132,14 +134,6 @@ public class Account {
 		this.department = department;
 	}
 
-	public Contract getContract() {
-		return contract;
-	}
-
-	public void setContract(Contract contract) {
-		this.contract = contract;
-	}
-
 	public Organization getOrganization() {
 		return organization;
 	}
@@ -154,6 +148,22 @@ public class Account {
 
 	public void setSuperior(Account superior) {
 		this.superior = superior;
+	}
+
+	public Float getPaidHoliday() {
+		return paidHoliday;
+	}
+
+	public void setPaidHoliday(Float paidHoliday) {
+		this.paidHoliday = paidHoliday;
+	}
+
+	public Integer getEmployeeRtt() {
+		return employeeRtt;
+	}
+
+	public void setEmployeeRtt(Integer employeeRtt) {
+		this.employeeRtt = employeeRtt;
 	}
 	
 }

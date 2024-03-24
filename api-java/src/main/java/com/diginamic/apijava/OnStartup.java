@@ -12,8 +12,6 @@ import org.springframework.stereotype.Component;
 import com.diginamic.apijava.entity.Absence;
 import com.diginamic.apijava.entity.AbsenceOrganization;
 import com.diginamic.apijava.entity.Account;
-import com.diginamic.apijava.entity.Contract;
-import com.diginamic.apijava.entity.ContractOrganization;
 import com.diginamic.apijava.entity.Department;
 import com.diginamic.apijava.entity.Organization;
 import com.diginamic.apijava.entity.Role;
@@ -24,8 +22,6 @@ import com.diginamic.apijava.enums.AbsenceType;
 import com.diginamic.apijava.repository.AbsenceOrganizationRepository;
 import com.diginamic.apijava.repository.AbsenceRepository;
 import com.diginamic.apijava.repository.AccountRepository;
-import com.diginamic.apijava.repository.ContractOrganizationRepository;
-import com.diginamic.apijava.repository.ContractRepository;
 import com.diginamic.apijava.repository.DepartmentRepository;
 import com.diginamic.apijava.repository.OrganizationRepository;
 import com.diginamic.apijava.repository.RoleRepository;
@@ -39,9 +35,7 @@ public class OnStartup {
 	private AbsenceRepository absenceRepository;
 	private AbsenceOrganizationRepository absenceOrganizationRepository;
 	private DepartmentRepository departmentRepository;
-	private ContractRepository contractRepository;
 	private OrganizationRepository organizationRepository;
-	private ContractOrganizationRepository contractOrganizationRepository;
 	private RoleRepository roleRepository;
 	private AccountRepository accountRepository;
 	private PasswordEncoder passwordEncoder;
@@ -51,8 +45,6 @@ public class OnStartup {
 			AccountRepository accountRepository, 
 			PasswordEncoder passwordEncoder, 
 			OrganizationRepository organizationRepository, 
-			ContractOrganizationRepository contractOrganizationRepository, 
-			ContractRepository contractRepository, 
 			DepartmentRepository departmentRepository,
 			AbsenceOrganizationRepository absenceOrganizationRepository,
 			AbsenceRepository absenceRepository
@@ -62,8 +54,6 @@ public class OnStartup {
 		this.accountRepository = accountRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.organizationRepository = organizationRepository;
-		this.contractOrganizationRepository = contractOrganizationRepository;
-		this.contractRepository = contractRepository;
 		this.departmentRepository = departmentRepository;
 		this.absenceOrganizationRepository = absenceOrganizationRepository;
 		this.absenceRepository = absenceRepository;
@@ -107,6 +97,8 @@ public class OnStartup {
 			adminAccount.setFirstname("admin");
 			adminAccount.setLastname("admin");
 			adminAccount.setPassword(passwordEncoder.encode("admin"));
+			adminAccount.setEmployeeRtt(6);
+			adminAccount.setPaidHoliday(25F);
 			adminAccount.getRoles().add(userOpt.get());
 			adminAccount.getRoles().add(managerOpt.get());
 			adminAccount.getRoles().add(adminOpt.get());
@@ -115,15 +107,11 @@ public class OnStartup {
 			// End
 			
 			// Test data
-			
-			ContractOrganization standardContractOrganization = new ContractOrganization();
-			standardContractOrganization.setPublicHoliday(11);
-			standardContractOrganization.setEmployerRtt(5);
-			contractOrganizationRepository.save(standardContractOrganization);
-			
+					
 			Organization diginamicOrganization = new Organization();
 			diginamicOrganization.setName("Diginamic");
-			diginamicOrganization.setContractOrganization(standardContractOrganization);
+			diginamicOrganization.setPublicHoliday(11);
+			diginamicOrganization.setEmployerRtt(5);
 			organizationRepository.save(diginamicOrganization);
 			
 			AbsenceOrganization rtt1 = new AbsenceOrganization();
@@ -131,15 +119,10 @@ public class OnStartup {
 			rtt1.setEndDate(LocalDate.of(2024, 03, 24));
 			rtt1.setReason("RTT de test");
 			rtt1.setOrganization(diginamicOrganization);
-			rtt1.setAbsenceOrganizationType(AbsenceOrganizationType.RTT_EMPLOYER);
+			rtt1.setAbsenceOrganizationType(AbsenceOrganizationType.RTT_EMPLOYEUR);
 			rtt1.setAbsenceOrganizationStatus(AbsenceOrganizationStatus.INITIALE);
 			absenceOrganizationRepository.save(rtt1);
-			
-			Contract standardContract = new Contract();
-			standardContract.setEmployeeRtt(6);
-			standardContract.setPaidHoliday(25F);
-			contractRepository.save(standardContract);
-			
+					
 			Department devDepartment = new Department();
 			devDepartment.setName("Recherche & Développement");
 			departmentRepository.save(devDepartment);
@@ -150,7 +133,8 @@ public class OnStartup {
 			managerAccount.setLastname("manager");
 			managerAccount.setPassword(passwordEncoder.encode("manager"));
 			managerAccount.setOrganization(diginamicOrganization);
-			managerAccount.setContract(standardContract);
+			managerAccount.setEmployeeRtt(6);
+			managerAccount.setPaidHoliday(25F);
 			managerAccount.getRoles().add(userOpt.get());
 			managerAccount.getRoles().add(managerOpt.get());
 			accountRepository.save(managerAccount);
@@ -162,7 +146,8 @@ public class OnStartup {
 			userAccount.setPassword(passwordEncoder.encode("user"));
 			userAccount.setSuperior(managerAccount);
 			userAccount.setOrganization(diginamicOrganization);
-			userAccount.setContract(standardContract);
+			userAccount.setEmployeeRtt(6);
+			userAccount.setPaidHoliday(25F);
 			userAccount.setDepartment(devDepartment);
 			userAccount.getRoles().add(userOpt.get());
 			accountRepository.save(userAccount);
