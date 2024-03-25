@@ -16,6 +16,12 @@ public class AccountInfoDtoMapper {
 				account.getLastname(), 
 				account.getEmail(),
 				account.getImage(),
+				account.getPaidHoliday().toString(),
+				account.getEmployeeRtt().toString(),
+				account.getGroupe().getName(),
+				account.getGroupe().getDepartment().getName(),
+				account.getGroupe().getDepartment().getOrganization().getName(),
+				account.getStartDate().toString(),
 				account.getRoles().stream().map(role -> role.getName()).toList()
 				);
 		

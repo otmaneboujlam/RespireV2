@@ -14,10 +14,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 
 @Entity
-public class Department {
-	
+public class Groupe {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -25,13 +26,16 @@ public class Department {
 	@Column(nullable = false)
 	private String name;
 	
-	@OneToMany(mappedBy = "department", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "groupe", fetch = FetchType.LAZY)
 	@JsonIgnore
-	private List<Groupe> groupes = new ArrayList<Groupe>();
+	private List<Account> accounts = new ArrayList<Account>();
+	
+	@OneToOne
+	private Account owner;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(nullable = true)
-	private Organization organization;
+	private Department department;
 
 	public Integer getId() {
 		return id;
@@ -49,20 +53,28 @@ public class Department {
 		this.name = name;
 	}
 
-	public List<Groupe> getGroupes() {
-		return groupes;
+	public Department getDepartment() {
+		return department;
 	}
 
-	public void setGroupes(List<Groupe> groupes) {
-		this.groupes = groupes;
+	public void setDepartment(Department department) {
+		this.department = department;
 	}
 
-	public Organization getOrganization() {
-		return organization;
+	public List<Account> getAccounts() {
+		return accounts;
 	}
 
-	public void setOrganization(Organization organization) {
-		this.organization = organization;
+	public void setAccounts(List<Account> accounts) {
+		this.accounts = accounts;
+	}
+
+	public Account getOwner() {
+		return owner;
+	}
+
+	public void setOwner(Account owner) {
+		this.owner = owner;
 	}
 
 }

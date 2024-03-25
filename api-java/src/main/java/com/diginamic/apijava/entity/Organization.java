@@ -31,7 +31,7 @@ public class Organization {
 	
 	@OneToMany(mappedBy = "organization", fetch = FetchType.LAZY)
 	@JsonIgnore
-	private List<Account> accounts = new ArrayList<Account>();
+	private List<Department> departments = new ArrayList<Department>();
 	
 	@OneToMany(mappedBy = "organization", fetch = FetchType.LAZY)
 	@JsonIgnore
@@ -51,14 +51,6 @@ public class Organization {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public List<Account> getAccounts() {
-		return accounts;
-	}
-
-	public void setAccounts(List<Account> accounts) {
-		this.accounts = accounts;
 	}
 
 	public List<AbsenceOrganization> getAbsencesOrganization() {
@@ -83,6 +75,14 @@ public class Organization {
 
 	public void setEmployerRtt(Integer employerRtt) {
 		this.employerRtt = employerRtt;
+	}
+
+	public List<Department> getDepartments() {
+		return departments;
+	}
+
+	public void setDepartments(List<Department> departments) {
+		this.departments = departments;
 	}
 	
 }

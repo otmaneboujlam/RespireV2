@@ -1,5 +1,6 @@
 package com.diginamic.apijava.entity;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +31,9 @@ public class Account {
 	private String lastname;
 	
 	@Column(nullable = false)
+	private LocalDate startDate;
+	
+	@Column(nullable = false)
 	private String email;
 	
 	@Column(nullable = false)
@@ -44,10 +48,6 @@ public class Account {
 	@JsonIgnore
 	private List<Absence> absences = new ArrayList<Absence>();
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(nullable = true)
-	private Department department;
-	
 	@Column(nullable = false)
 	private Float paidHoliday;
 	
@@ -56,11 +56,7 @@ public class Account {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(nullable = true)
-	private Organization organization;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(nullable = true)
-	private Account superior;
+	private Groupe groupe;
 
 	public Integer getId() {
 		return id;
@@ -126,30 +122,6 @@ public class Account {
 		this.absences = absences;
 	}
 
-	public Department getDepartment() {
-		return department;
-	}
-
-	public void setDepartment(Department department) {
-		this.department = department;
-	}
-
-	public Organization getOrganization() {
-		return organization;
-	}
-
-	public void setOrganization(Organization organization) {
-		this.organization = organization;
-	}
-
-	public Account getSuperior() {
-		return superior;
-	}
-
-	public void setSuperior(Account superior) {
-		this.superior = superior;
-	}
-
 	public Float getPaidHoliday() {
 		return paidHoliday;
 	}
@@ -164,6 +136,22 @@ public class Account {
 
 	public void setEmployeeRtt(Integer employeeRtt) {
 		this.employeeRtt = employeeRtt;
+	}
+
+	public LocalDate getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(LocalDate startDate) {
+		this.startDate = startDate;
+	}
+
+	public Groupe getGroupe() {
+		return groupe;
+	}
+
+	public void setGroupe(Groupe groupe) {
+		this.groupe = groupe;
 	}
 	
 }

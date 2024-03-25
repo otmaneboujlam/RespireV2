@@ -13,6 +13,7 @@ import com.diginamic.apijava.entity.Absence;
 import com.diginamic.apijava.entity.AbsenceOrganization;
 import com.diginamic.apijava.entity.Account;
 import com.diginamic.apijava.entity.Department;
+import com.diginamic.apijava.entity.Groupe;
 import com.diginamic.apijava.entity.Organization;
 import com.diginamic.apijava.entity.Role;
 import com.diginamic.apijava.enums.AbsenceOrganizationStatus;
@@ -23,6 +24,7 @@ import com.diginamic.apijava.repository.AbsenceOrganizationRepository;
 import com.diginamic.apijava.repository.AbsenceRepository;
 import com.diginamic.apijava.repository.AccountRepository;
 import com.diginamic.apijava.repository.DepartmentRepository;
+import com.diginamic.apijava.repository.GroupeRepository;
 import com.diginamic.apijava.repository.OrganizationRepository;
 import com.diginamic.apijava.repository.RoleRepository;
 
@@ -32,6 +34,7 @@ public class OnStartup {
 	@Value("${spring.jpa.hibernate.ddl-auto}")
 	private String jpaSettings;
 
+	private GroupeRepository groupRepository;
 	private AbsenceRepository absenceRepository;
 	private AbsenceOrganizationRepository absenceOrganizationRepository;
 	private DepartmentRepository departmentRepository;
@@ -47,7 +50,8 @@ public class OnStartup {
 			OrganizationRepository organizationRepository, 
 			DepartmentRepository departmentRepository,
 			AbsenceOrganizationRepository absenceOrganizationRepository,
-			AbsenceRepository absenceRepository
+			AbsenceRepository absenceRepository,
+			GroupeRepository groupRepository
 			) {
 		super();
 		this.roleRepository = roleRepository;
@@ -57,6 +61,7 @@ public class OnStartup {
 		this.departmentRepository = departmentRepository;
 		this.absenceOrganizationRepository = absenceOrganizationRepository;
 		this.absenceRepository = absenceRepository;
+		this.groupRepository = groupRepository;
 	}
 
 	@EventListener(ContextRefreshedEvent.class)
@@ -99,6 +104,7 @@ public class OnStartup {
 			adminAccount.setPassword(passwordEncoder.encode("admin"));
 			adminAccount.setEmployeeRtt(6);
 			adminAccount.setPaidHoliday(25F);
+			adminAccount.setStartDate(LocalDate.of(2024, 03, 28));
 			adminAccount.getRoles().add(userOpt.get());
 			adminAccount.getRoles().add(managerOpt.get());
 			adminAccount.getRoles().add(adminOpt.get());
@@ -125,6 +131,7 @@ public class OnStartup {
 					
 			Department devDepartment = new Department();
 			devDepartment.setName("Recherche & Développement");
+			devDepartment.setOrganization(diginamicOrganization);
 			departmentRepository.save(devDepartment);
 			
 			Account managerAccount = new Account();
@@ -132,25 +139,54 @@ public class OnStartup {
 			managerAccount.setFirstname("manager");
 			managerAccount.setLastname("manager");
 			managerAccount.setPassword(passwordEncoder.encode("manager"));
-			managerAccount.setOrganization(diginamicOrganization);
 			managerAccount.setEmployeeRtt(6);
 			managerAccount.setPaidHoliday(25F);
+			managerAccount.setStartDate(LocalDate.of(2024, 03, 28));
 			managerAccount.getRoles().add(userOpt.get());
 			managerAccount.getRoles().add(managerOpt.get());
 			accountRepository.save(managerAccount);
+			
+			Account managerAccount1 = new Account();
+			managerAccount1.setEmail("manager1@respire.com");
+			managerAccount1.setFirstname("manager1");
+			managerAccount1.setLastname("manager1");
+			managerAccount1.setPassword(passwordEncoder.encode("manager1"));
+			managerAccount1.setEmployeeRtt(6);
+			managerAccount1.setPaidHoliday(25F);
+			managerAccount1.setStartDate(LocalDate.of(2024, 03, 28));
+			managerAccount1.getRoles().add(userOpt.get());
+			managerAccount1.getRoles().add(managerOpt.get());
+			accountRepository.save(managerAccount1);
+			
+			Groupe recherche = new Groupe();
+			recherche.setName("Recherche");
+			recherche.setDepartment(devDepartment);
+			recherche.setOwner(managerAccount);
+			groupRepository.save(recherche);
 			
 			Account userAccount = new Account();
 			userAccount.setEmail("user@respire.com");
 			userAccount.setFirstname("user");
 			userAccount.setLastname("user");
 			userAccount.setPassword(passwordEncoder.encode("user"));
-			userAccount.setSuperior(managerAccount);
-			userAccount.setOrganization(diginamicOrganization);
+			userAccount.setGroupe(recherche);
 			userAccount.setEmployeeRtt(6);
 			userAccount.setPaidHoliday(25F);
-			userAccount.setDepartment(devDepartment);
+			userAccount.setStartDate(LocalDate.of(2024, 03, 28));
 			userAccount.getRoles().add(userOpt.get());
 			accountRepository.save(userAccount);
+			
+			Account userAccount1 = new Account();
+			userAccount1.setEmail("user1@respire.com");
+			userAccount1.setFirstname("user1");
+			userAccount1.setLastname("user1");
+			userAccount1.setPassword(passwordEncoder.encode("user1"));
+			userAccount1.setGroupe(recherche);
+			userAccount1.setEmployeeRtt(6);
+			userAccount1.setPaidHoliday(25F);
+			userAccount1.setStartDate(LocalDate.of(2024, 03, 20));
+			userAccount1.getRoles().add(userOpt.get());
+			accountRepository.save(userAccount1);
 			
 			Absence cp1 = new Absence();
 			cp1.setStartDate(LocalDate.of(2024, 03, 25));
@@ -160,6 +196,15 @@ public class OnStartup {
 			cp1.setAbsenceStatusE(AbsenceStatus.INITIALE);
 			cp1.setAccount(userAccount);
 			absenceRepository.save(cp1);
+			
+			Absence cp2 = new Absence();
+			cp2.setStartDate(LocalDate.of(2024, 03, 25));
+			cp2.setEndDate(LocalDate.of(2024, 03, 28));
+			cp2.setReason("Congé payé de test");
+			cp2.setAbsenceType(AbsenceType.CONGE_PAYE);
+			cp2.setAbsenceStatusE(AbsenceStatus.INITIALE);
+			cp2.setAccount(userAccount1);
+			absenceRepository.save(cp2);
 			
 			// End test data
 			

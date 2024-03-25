@@ -9,18 +9,31 @@ public class AccountInfoDto {
 	private String lastName;
 	private String email;
 	private String image;
+	private String paidHoliday;
+	private String employeeRtt;
+	private String group;
+	private String department;
+	private String organization;
+	private String startDate;
 	private List<String> roles;
 	
-	public AccountInfoDto(Integer id,String firstName, String lastName, String email, String image, List<String> roles) {
+	public AccountInfoDto(Integer id, String firstName, String lastName, String email, String image, String paidHoliday,
+			String employeeRtt, String group, String department, String organization, String startDate ,List<String> roles) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.image = image;
+		this.paidHoliday = paidHoliday;
+		this.employeeRtt = employeeRtt;
+		this.group = group;
+		this.department = department;
+		this.organization = organization;
+		this.startDate = startDate;
 		this.roles = roles;
 	}
-	
+
 	public Integer getId() {
 		return id;
 	}
@@ -48,9 +61,11 @@ public class AccountInfoDto {
 	public String getEmail() {
 		return email;
 	}
+
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
 	public String getImage() {
 		return image;
 	}
@@ -59,9 +74,58 @@ public class AccountInfoDto {
 		this.image = image;
 	}
 
+	public String getPaidHoliday() {
+		return paidHoliday;
+	}
+
+	public void setPaidHoliday(String paidHoliday) {
+		this.paidHoliday = paidHoliday;
+	}
+
+	public String getEmployeeRtt() {
+		return employeeRtt;
+	}
+
+	public void setEmployeeRtt(String employeeRtt) {
+		this.employeeRtt = employeeRtt;
+	}
+
+	public String getGroup() {
+		return group;
+	}
+
+	public void setGroup(String group) {
+		this.group = group;
+	}
+
+	public String getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(String department) {
+		this.department = department;
+	}
+
+	public String getOrganization() {
+		return organization;
+	}
+
+	public void setOrganization(String organization) {
+		this.organization = organization;
+	}
+
+	public String getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+
 	public List<String> getRoles() {
 		return roles;
 	}
+
 	public void setRoles(List<String> roles) {
 		this.roles = roles;
 	}
