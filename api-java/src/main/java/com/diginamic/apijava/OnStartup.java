@@ -134,6 +134,11 @@ public class OnStartup {
 			devDepartment.setOrganization(diginamicOrganization);
 			departmentRepository.save(devDepartment);
 			
+			Groupe managerGroup = new Groupe();
+			managerGroup.setName("Manager group");
+			managerGroup.setDepartment(devDepartment);
+			groupRepository.save(managerGroup);
+			
 			Account managerAccount = new Account();
 			managerAccount.setEmail("manager@respire.com");
 			managerAccount.setFirstname("manager");
@@ -142,6 +147,7 @@ public class OnStartup {
 			managerAccount.setEmployeeRtt(6);
 			managerAccount.setPaidHoliday(25F);
 			managerAccount.setStartDate(LocalDate.of(2024, 03, 28));
+			managerAccount.setGroupe(managerGroup);
 			managerAccount.getRoles().add(userOpt.get());
 			managerAccount.getRoles().add(managerOpt.get());
 			accountRepository.save(managerAccount);
