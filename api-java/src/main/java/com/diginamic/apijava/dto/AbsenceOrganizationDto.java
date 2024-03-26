@@ -3,19 +3,17 @@ package com.diginamic.apijava.dto;
 public class AbsenceOrganizationDto {
 	
 	private Integer id;
-	private String startDate;
-	private String endDate;
+	private String date;
 	private String reason;
 	private String absenceStatus;
 	private String absenceType;
 	private String organization;
 	
-	public AbsenceOrganizationDto(Integer id, String startDate, String endDate, String reason, String absenceStatus,
-			String absenceType, String organization) {
+	public AbsenceOrganizationDto(Integer id, String date, String reason, String absenceStatus, String absenceType,
+			String organization) {
 		super();
 		this.id = id;
-		this.startDate = startDate;
-		this.endDate = endDate;
+		this.date = date;
 		this.reason = reason;
 		this.absenceStatus = absenceStatus;
 		this.absenceType = absenceType;
@@ -30,20 +28,12 @@ public class AbsenceOrganizationDto {
 		this.id = id;
 	}
 
-	public String getStartDate() {
-		return startDate;
+	public String getDate() {
+		return date;
 	}
 
-	public void setStartDate(String startDate) {
-		this.startDate = startDate;
-	}
-
-	public String getEndDate() {
-		return endDate;
-	}
-
-	public void setEndDate(String endDate) {
-		this.endDate = endDate;
+	public void setDate(String date) {
+		this.date = date;
 	}
 
 	public String getReason() {

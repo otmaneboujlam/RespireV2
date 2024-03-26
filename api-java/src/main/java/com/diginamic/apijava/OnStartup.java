@@ -121,8 +121,7 @@ public class OnStartup {
 			organizationRepository.save(diginamicOrganization);
 			
 			AbsenceOrganization rtt1 = new AbsenceOrganization();
-			rtt1.setStartDate(LocalDate.of(2024, 03, 24));
-			rtt1.setEndDate(LocalDate.of(2024, 03, 24));
+			rtt1.setDate(LocalDate.of(2024, 03, 24));
 			rtt1.setReason("RTT de test");
 			rtt1.setOrganization(diginamicOrganization);
 			rtt1.setAbsenceOrganizationType(AbsenceOrganizationType.RTT_EMPLOYEUR);
@@ -199,7 +198,7 @@ public class OnStartup {
 			cp1.setEndDate(LocalDate.of(2024, 03, 28));
 			cp1.setReason("Congé payé de test");
 			cp1.setAbsenceType(AbsenceType.CONGE_PAYE);
-			cp1.setAbsenceStatusE(AbsenceStatus.INITIALE);
+			cp1.setAbsenceStatus(AbsenceStatus.INITIALE);
 			cp1.setAccount(userAccount);
 			absenceRepository.save(cp1);
 			
@@ -208,7 +207,7 @@ public class OnStartup {
 			cp2.setEndDate(LocalDate.of(2024, 03, 28));
 			cp2.setReason("Congé payé de test");
 			cp2.setAbsenceType(AbsenceType.CONGE_PAYE);
-			cp2.setAbsenceStatusE(AbsenceStatus.INITIALE);
+			cp2.setAbsenceStatus(AbsenceStatus.INITIALE);
 			cp2.setAccount(userAccount1);
 			absenceRepository.save(cp2);
 			

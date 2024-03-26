@@ -8,11 +8,16 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.diginamic.apijava.dto.AbsenceOrganizationDto;
+import com.diginamic.apijava.dto.AbsenceOrganizationPostDto;
 import com.diginamic.apijava.service.AbsenceOrganizationService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/absenceOrganization")
@@ -44,6 +49,12 @@ public class AbsenceOrganizationController {
 	@GetMapping("/organization/{id}")
 	public AbsenceOrganizationDto findByIdInOrganization(@PathVariable("id") Integer id) {
 		return absenceOrganizationService.findByIdInOrganization(id, SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+	}
+	
+	@Secured({"ROLE_ADMIN"})
+	@PostMapping
+	public AbsenceOrganizationDto createAbsence(@RequestBody @Valid AbsenceOrganizationPostDto absenceOrganizationToCreate) {
+		return absenceOrganizationService.create(absenceOrganizationToCreate);
 	}
 
 }

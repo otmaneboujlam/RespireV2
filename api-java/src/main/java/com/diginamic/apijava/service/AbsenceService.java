@@ -180,7 +180,7 @@ public class AbsenceService {
 		Absence a = new Absence();
 		a.setStartDate(LocalDate.parse(absenceToCreate.getStartDate()));
 		a.setEndDate(LocalDate.parse(absenceToCreate.getEndDate()));
-		a.setAbsenceStatusE(AbsenceStatus.INITIALE);
+		a.setAbsenceStatus(AbsenceStatus.INITIALE);
 		a.setAbsenceType(AbsenceType.valueOf(absenceToCreate.getAbsenceType()));
 		a.setReason(absenceToCreate.getReason());
 		a.setAccount(currentUserOpt.get());

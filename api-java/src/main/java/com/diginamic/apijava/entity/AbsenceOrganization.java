@@ -24,10 +24,7 @@ public class AbsenceOrganization {
 	private Integer id;
 	
 	@Column(nullable = false)
-	private LocalDate startDate;
-	
-	@Column(nullable = false)
-	private LocalDate endDate;
+	private LocalDate date;
 	
 	private String reason;
 	
@@ -51,20 +48,12 @@ public class AbsenceOrganization {
 		this.id = id;
 	}
 
-	public LocalDate getStartDate() {
-		return startDate;
+	public LocalDate getDate() {
+		return date;
 	}
 
-	public void setStartDate(LocalDate startDate) {
-		this.startDate = startDate;
-	}
-
-	public LocalDate getEndDate() {
-		return endDate;
-	}
-
-	public void setEndDate(LocalDate endDate) {
-		this.endDate = endDate;
+	public void setDate(LocalDate date) {
+		this.date = date;
 	}
 
 	public String getReason() {

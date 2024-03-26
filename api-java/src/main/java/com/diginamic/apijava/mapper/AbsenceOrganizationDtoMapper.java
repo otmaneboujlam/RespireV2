@@ -12,8 +12,7 @@ public class AbsenceOrganizationDtoMapper {
 		
 		AbsenceOrganizationDto dto = new AbsenceOrganizationDto(
 				absenceOrganization.getId(),
-				absenceOrganization.getStartDate().toString(),
-				absenceOrganization.getEndDate().toString(),
+				absenceOrganization.getDate().toString(),
 				absenceOrganization.getReason(),
 				absenceOrganization.getAbsenceOrganizationStatus().toString(),
 				absenceOrganization.getAbsenceOrganizationType().toString(),

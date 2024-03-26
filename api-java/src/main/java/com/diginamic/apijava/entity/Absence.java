@@ -95,7 +95,7 @@ public class Absence {
 		return absenceStatus;
 	}
 
-	public void setAbsenceStatusE(AbsenceStatus absenceStatus) {
+	public void setAbsenceStatus(AbsenceStatus absenceStatus) {
 		this.absenceStatus = absenceStatus;
 	}
 
