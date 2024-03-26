@@ -66,5 +66,49 @@ public class ExceptionHandlerControllerAdvice {
 				request.getDescription(false)
 				);
 	}
+	
+	@ExceptionHandler(DateParseException.class)
+	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
+	public ErrorDto handleExceptionDateParse(Exception exception, WebRequest request) {
+		//exception.printStackTrace();
+		return new ErrorDto(
+				HttpStatus.BAD_REQUEST.value(), 
+				exception.getMessage(), 
+				request.getDescription(false)
+				);
+	}
+	
+	@ExceptionHandler(IllegalAbsenceTypeException.class)
+	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
+	public ErrorDto handleExceptionIllegalAbsenceType(Exception exception, WebRequest request) {
+		//exception.printStackTrace();
+		return new ErrorDto(
+				HttpStatus.BAD_REQUEST.value(), 
+				exception.getMessage(), 
+				request.getDescription(false)
+				);
+	}
+	
+	@ExceptionHandler(AbsenceReasonException.class)
+	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
+	public ErrorDto handleExceptionAbsenceReason(Exception exception, WebRequest request) {
+		//exception.printStackTrace();
+		return new ErrorDto(
+				HttpStatus.BAD_REQUEST.value(), 
+				exception.getMessage(), 
+				request.getDescription(false)
+				);
+	}
+	
+	@ExceptionHandler(AbsenceStartEndDateException.class)
+	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
+	public ErrorDto handleExceptionAbsenceStartEndDate(Exception exception, WebRequest request) {
+		//exception.printStackTrace();
+		return new ErrorDto(
+				HttpStatus.BAD_REQUEST.value(), 
+				exception.getMessage(), 
+				request.getDescription(false)
+				);
+	}
 		
 }

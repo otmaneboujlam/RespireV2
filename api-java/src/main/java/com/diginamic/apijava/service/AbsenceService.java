@@ -1,5 +1,6 @@
 package com.diginamic.apijava.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -8,12 +9,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.diginamic.apijava.dto.AbsenceDto;
+import com.diginamic.apijava.dto.AbsencePostDto;
 import com.diginamic.apijava.entity.Absence;
 import com.diginamic.apijava.entity.Account;
 import com.diginamic.apijava.entity.Groupe;
 import com.diginamic.apijava.entity.Role;
 import com.diginamic.apijava.enums.AbsenceStatus;
+import com.diginamic.apijava.enums.AbsenceType;
+import com.diginamic.apijava.exception.AbsenceReasonException;
+import com.diginamic.apijava.exception.AbsenceStartEndDateException;
+import com.diginamic.apijava.exception.DateParseException;
 import com.diginamic.apijava.exception.EntityAccessDeniedException;
+import com.diginamic.apijava.exception.IllegalAbsenceTypeException;
 import com.diginamic.apijava.exception.RolesHaveNotBeenCreatedException;
 import com.diginamic.apijava.exception.StatusNotFoundException;
 import com.diginamic.apijava.mapper.AbsenceDtoMapper;
@@ -23,6 +30,7 @@ import com.diginamic.apijava.repository.GroupeRepository;
 import com.diginamic.apijava.repository.RoleRepository;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 
 @Service
 public class AbsenceService {
@@ -136,6 +144,47 @@ public class AbsenceService {
 			throw new EntityAccessDeniedException("You do not have the right to view this entity");
 		}
 		return absenceDtoMapper.toDto(absenceOpt.get());
+	}
+	
+	public AbsenceDto create(@Valid AbsencePostDto absenceToCreate, String email) {
+		Optional<Account> currentUserOpt = accountRepository.findFirstByEmail(email);
+		if(currentUserOpt.isEmpty()) {
+			throw new EntityNotFoundException("Current user not found");
+		}
+		try {
+			LocalDate.parse(absenceToCreate.getStartDate());
+		} catch (Exception e) {
+			throw new DateParseException(absenceToCreate.getStartDate()+" could not be parsed");
+		}
+		try {
+			LocalDate.parse(absenceToCreate.getEndDate());
+		} catch (Exception e) {
+			throw new DateParseException(absenceToCreate.getEndDate()+" could not be parsed");
+		}
+		try {
+			AbsenceType.valueOf(absenceToCreate.getAbsenceType());
+		} catch (Exception e) {
+			throw new IllegalAbsenceTypeException(absenceToCreate.getAbsenceType()+" does not correspond to a type of absence");
+		}
+		if(absenceToCreate.getAbsenceType().equals(AbsenceType.CONGE_SANS_SOLDE.toString())) {
+			if(absenceToCreate.getReason().isBlank()) {
+				throw new AbsenceReasonException("The reason is mandatory if the type of absence is Unpaid");
+			}
+		}
+		if(LocalDate.parse(absenceToCreate.getStartDate()).isBefore(LocalDate.now())) {
+			throw new AbsenceStartEndDateException("The start date cannot be in the past");
+		}
+		if(LocalDate.parse(absenceToCreate.getStartDate()).isAfter(LocalDate.parse(absenceToCreate.getEndDate()))) {
+			throw new AbsenceStartEndDateException("The end date must be greater than or equal to the start date");
+		}
+		Absence a = new Absence();
+		a.setStartDate(LocalDate.parse(absenceToCreate.getStartDate()));
+		a.setEndDate(LocalDate.parse(absenceToCreate.getEndDate()));
+		a.setAbsenceStatusE(AbsenceStatus.INITIALE);
+		a.setAbsenceType(AbsenceType.valueOf(absenceToCreate.getAbsenceType()));
+		a.setReason(absenceToCreate.getReason());
+		a.setAccount(currentUserOpt.get());
+		return absenceDtoMapper.toDto(absenceRepository.save(a));
 	}
 
 }
