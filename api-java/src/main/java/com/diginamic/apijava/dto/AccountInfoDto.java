@@ -9,7 +9,8 @@ public class AccountInfoDto {
 	private String lastName;
 	private String email;
 	private String image;
-	private String paidHoliday;
+	private String paidHolidayLastYear;
+	private String paidHolidayThisYear;
 	private String employeeRtt;
 	private String group;
 	private String department;
@@ -17,15 +18,17 @@ public class AccountInfoDto {
 	private String startDate;
 	private List<String> roles;
 	
-	public AccountInfoDto(Integer id, String firstName, String lastName, String email, String image, String paidHoliday,
-			String employeeRtt, String group, String department, String organization, String startDate ,List<String> roles) {
+	public AccountInfoDto(Integer id, String firstName, String lastName, String email, String image,
+			String paidHolidayLastYear, String paidHolidayThisYear, String employeeRtt, String group, String department,
+			String organization, String startDate, List<String> roles) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.image = image;
-		this.paidHoliday = paidHoliday;
+		this.paidHolidayLastYear = paidHolidayLastYear;
+		this.paidHolidayThisYear = paidHolidayThisYear;
 		this.employeeRtt = employeeRtt;
 		this.group = group;
 		this.department = department;
@@ -74,12 +77,20 @@ public class AccountInfoDto {
 		this.image = image;
 	}
 
-	public String getPaidHoliday() {
-		return paidHoliday;
+	public String getPaidHolidayLastYear() {
+		return paidHolidayLastYear;
 	}
 
-	public void setPaidHoliday(String paidHoliday) {
-		this.paidHoliday = paidHoliday;
+	public void setPaidHolidayLastYear(String paidHolidayLastYear) {
+		this.paidHolidayLastYear = paidHolidayLastYear;
+	}
+
+	public String getPaidHolidayThisYear() {
+		return paidHolidayThisYear;
+	}
+
+	public void setPaidHolidayThisYear(String paidHolidayThisYear) {
+		this.paidHolidayThisYear = paidHolidayThisYear;
 	}
 
 	public String getEmployeeRtt() {

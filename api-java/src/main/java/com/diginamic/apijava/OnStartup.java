@@ -103,8 +103,9 @@ public class OnStartup {
 			adminAccount.setLastname("admin");
 			adminAccount.setPassword(passwordEncoder.encode("admin"));
 			adminAccount.setEmployeeRtt(6);
-			adminAccount.setPaidHoliday(25F);
-			adminAccount.setStartDate(LocalDate.of(2024, 03, 28));
+			adminAccount.setPaidHolidayLastYear(0F);
+			adminAccount.setPaidHolidayThisYear(4.16F);
+			adminAccount.setStartDate(LocalDate.of(2024, 03, 01));
 			adminAccount.getRoles().add(userOpt.get());
 			adminAccount.getRoles().add(managerOpt.get());
 			adminAccount.getRoles().add(adminOpt.get());
@@ -121,12 +122,36 @@ public class OnStartup {
 			organizationRepository.save(diginamicOrganization);
 			
 			AbsenceOrganization rtt1 = new AbsenceOrganization();
-			rtt1.setDate(LocalDate.of(2024, 03, 24));
+			rtt1.setDate(LocalDate.of(2024, 03, 26));
 			rtt1.setReason("RTT de test");
 			rtt1.setOrganization(diginamicOrganization);
 			rtt1.setAbsenceOrganizationType(AbsenceOrganizationType.RTT_EMPLOYEUR);
 			rtt1.setAbsenceOrganizationStatus(AbsenceOrganizationStatus.INITIALE);
 			absenceOrganizationRepository.save(rtt1);
+			
+			AbsenceOrganization rtt44 = new AbsenceOrganization();
+			rtt44.setDate(LocalDate.of(2024, 03, 24));
+			rtt44.setReason("RTT de test");
+			rtt44.setOrganization(diginamicOrganization);
+			rtt44.setAbsenceOrganizationType(AbsenceOrganizationType.RTT_EMPLOYEUR);
+			rtt44.setAbsenceOrganizationStatus(AbsenceOrganizationStatus.INITIALE);
+			absenceOrganizationRepository.save(rtt44);
+			
+			AbsenceOrganization rtt5 = new AbsenceOrganization();
+			rtt5.setDate(LocalDate.of(2024, 03, 27));
+			rtt5.setReason("férié");
+			rtt5.setOrganization(diginamicOrganization);
+			rtt5.setAbsenceOrganizationType(AbsenceOrganizationType.JOUR_FERIE);
+			rtt5.setAbsenceOrganizationStatus(AbsenceOrganizationStatus.INITIALE);
+			absenceOrganizationRepository.save(rtt5);
+			
+			AbsenceOrganization rtt6 = new AbsenceOrganization();
+			rtt6.setDate(LocalDate.of(2024, 03, 28));
+			rtt6.setReason("férié");
+			rtt6.setOrganization(diginamicOrganization);
+			rtt6.setAbsenceOrganizationType(AbsenceOrganizationType.JOUR_FERIE);
+			rtt6.setAbsenceOrganizationStatus(AbsenceOrganizationStatus.VALIDEE);
+			absenceOrganizationRepository.save(rtt6);
 					
 			Department devDepartment = new Department();
 			devDepartment.setName("Recherche & Développement");
@@ -144,8 +169,9 @@ public class OnStartup {
 			managerAccount.setLastname("manager");
 			managerAccount.setPassword(passwordEncoder.encode("manager"));
 			managerAccount.setEmployeeRtt(6);
-			managerAccount.setPaidHoliday(25F);
-			managerAccount.setStartDate(LocalDate.of(2024, 03, 28));
+			managerAccount.setPaidHolidayLastYear(0F);
+			managerAccount.setPaidHolidayThisYear(4.16F);
+			managerAccount.setStartDate(LocalDate.of(2024, 03, 01));
 			managerAccount.setGroupe(managerGroup);
 			managerAccount.getRoles().add(userOpt.get());
 			managerAccount.getRoles().add(managerOpt.get());
@@ -157,8 +183,9 @@ public class OnStartup {
 			managerAccount1.setLastname("manager1");
 			managerAccount1.setPassword(passwordEncoder.encode("manager1"));
 			managerAccount1.setEmployeeRtt(6);
-			managerAccount1.setPaidHoliday(25F);
-			managerAccount1.setStartDate(LocalDate.of(2024, 03, 28));
+			managerAccount1.setPaidHolidayLastYear(0F);
+			managerAccount1.setPaidHolidayThisYear(4.16F);
+			managerAccount1.setStartDate(LocalDate.of(2024, 03, 01));
 			managerAccount1.getRoles().add(userOpt.get());
 			managerAccount1.getRoles().add(managerOpt.get());
 			accountRepository.save(managerAccount1);
@@ -176,8 +203,9 @@ public class OnStartup {
 			userAccount.setPassword(passwordEncoder.encode("user"));
 			userAccount.setGroupe(recherche);
 			userAccount.setEmployeeRtt(6);
-			userAccount.setPaidHoliday(25F);
-			userAccount.setStartDate(LocalDate.of(2024, 03, 28));
+			userAccount.setPaidHolidayLastYear(0F);
+			userAccount.setPaidHolidayThisYear(4.16F);
+			userAccount.setStartDate(LocalDate.of(2024, 03, 01));
 			userAccount.getRoles().add(userOpt.get());
 			accountRepository.save(userAccount);
 			
@@ -188,7 +216,8 @@ public class OnStartup {
 			userAccount1.setPassword(passwordEncoder.encode("user1"));
 			userAccount1.setGroupe(recherche);
 			userAccount1.setEmployeeRtt(6);
-			userAccount1.setPaidHoliday(25F);
+			userAccount1.setPaidHolidayLastYear(7F);
+			userAccount1.setPaidHolidayThisYear(12.48F);
 			userAccount1.setStartDate(LocalDate.of(2024, 03, 20));
 			userAccount1.getRoles().add(userOpt.get());
 			accountRepository.save(userAccount1);
@@ -203,13 +232,40 @@ public class OnStartup {
 			absenceRepository.save(cp1);
 			
 			Absence cp2 = new Absence();
-			cp2.setStartDate(LocalDate.of(2024, 03, 25));
-			cp2.setEndDate(LocalDate.of(2024, 03, 28));
+			cp2.setStartDate(LocalDate.of(2024, 03, 22));
+			cp2.setEndDate(LocalDate.of(2024, 04, 03));
 			cp2.setReason("Congé payé de test");
 			cp2.setAbsenceType(AbsenceType.CONGE_PAYE);
-			cp2.setAbsenceStatus(AbsenceStatus.INITIALE);
+			cp2.setAbsenceStatus(AbsenceStatus.VALIDEE);
 			cp2.setAccount(userAccount1);
 			absenceRepository.save(cp2);
+			
+			Absence rtt2 = new Absence();
+			rtt2.setStartDate(LocalDate.of(2024, 03, 27));
+			rtt2.setEndDate(LocalDate.of(2024, 03, 27));
+			rtt2.setReason("rtt de test");
+			rtt2.setAbsenceType(AbsenceType.RTT_EMPLOYEE);
+			rtt2.setAbsenceStatus(AbsenceStatus.VALIDEE);
+			rtt2.setAccount(userAccount1);
+			absenceRepository.save(rtt2);
+			
+			Absence rtt3 = new Absence();
+			rtt3.setStartDate(LocalDate.of(2024, 03, 28));
+			rtt3.setEndDate(LocalDate.of(2024, 03, 28));
+			rtt3.setReason("rtt de test");
+			rtt3.setAbsenceType(AbsenceType.RTT_EMPLOYEE);
+			rtt3.setAbsenceStatus(AbsenceStatus.REJETEE);
+			rtt3.setAccount(userAccount1);
+			absenceRepository.save(rtt3);
+			
+			Absence rtt4 = new Absence();
+			rtt4.setStartDate(LocalDate.of(2023, 03, 28));
+			rtt4.setEndDate(LocalDate.of(2023, 03, 28));
+			rtt4.setReason("rtt de test");
+			rtt4.setAbsenceType(AbsenceType.RTT_EMPLOYEE);
+			rtt4.setAbsenceStatus(AbsenceStatus.VALIDEE);
+			rtt4.setAccount(userAccount1);
+			absenceRepository.save(rtt4);
 			
 			// End test data
 			

@@ -17,7 +17,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class AbsenceOrganization {
+public class AbsenceOrganization implements Comparable<AbsenceOrganization>{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,6 +39,16 @@ public class AbsenceOrganization {
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private AbsenceOrganizationType absenceOrganizationType;
+	
+	public int compareTo(AbsenceOrganization autre) {
+		if (this.date.isAfter(autre.getDate())){
+			return 1;
+		}
+		if (this.date.isBefore(autre.getDate())){
+			return -1;
+		}
+		return 0;
+	}
 
 	public Integer getId() {
 		return id;

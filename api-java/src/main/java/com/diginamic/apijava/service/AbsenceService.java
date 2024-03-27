@@ -174,8 +174,19 @@ public class AbsenceService {
 		if(LocalDate.parse(absenceToCreate.getStartDate()).isBefore(LocalDate.now())) {
 			throw new AbsenceStartEndDateException("The start date cannot be in the past");
 		}
+		if(absenceToCreate.getAbsenceType().equals(AbsenceType.RTT_EMPLOYEE.toString())) {
+			if(!LocalDate.parse(absenceToCreate.getStartDate()).isEqual(LocalDate.parse(absenceToCreate.getEndDate()))) {
+				throw new AbsenceStartEndDateException("The start date must be equal to the end date if the type of absence is RTT employee");
+			}
+		}
 		if(LocalDate.parse(absenceToCreate.getStartDate()).isAfter(LocalDate.parse(absenceToCreate.getEndDate()))) {
 			throw new AbsenceStartEndDateException("The end date must be greater than or equal to the start date");
+		}
+		if(LocalDate.parse(absenceToCreate.getStartDate()).getYear() != LocalDate.parse(absenceToCreate.getEndDate()).getYear()) {
+			throw new AbsenceStartEndDateException("Start date and end date must be in the same year");
+		}
+		if(LocalDate.parse(absenceToCreate.getStartDate()).getYear() != LocalDate.now().getYear() || LocalDate.parse(absenceToCreate.getEndDate()).getYear() != LocalDate.now().getYear()) {
+			throw new AbsenceStartEndDateException("The absence request must be in the current year");
 		}
 		Absence a = new Absence();
 		a.setStartDate(LocalDate.parse(absenceToCreate.getStartDate()));

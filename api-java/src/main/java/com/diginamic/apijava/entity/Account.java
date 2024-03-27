@@ -49,7 +49,10 @@ public class Account {
 	private List<Absence> absences = new ArrayList<Absence>();
 	
 	@Column(nullable = false)
-	private Float paidHoliday;
+	private Float paidHolidayLastYear;
+	
+	@Column(nullable = false)
+	private Float paidHolidayThisYear;
 	
 	@Column(nullable = false)
 	private Integer employeeRtt;
@@ -122,12 +125,20 @@ public class Account {
 		this.absences = absences;
 	}
 
-	public Float getPaidHoliday() {
-		return paidHoliday;
+	public Float getPaidHolidayLastYear() {
+		return paidHolidayLastYear;
 	}
 
-	public void setPaidHoliday(Float paidHoliday) {
-		this.paidHoliday = paidHoliday;
+	public void setPaidHolidayLastYear(Float paidHolidayLastYear) {
+		this.paidHolidayLastYear = paidHolidayLastYear;
+	}
+
+	public Float getPaidHolidayThisYear() {
+		return paidHolidayThisYear;
+	}
+
+	public void setPaidHolidayThisYear(Float paidHolidayThisYear) {
+		this.paidHolidayThisYear = paidHolidayThisYear;
 	}
 
 	public Integer getEmployeeRtt() {

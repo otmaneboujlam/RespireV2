@@ -1,6 +1,6 @@
-<mxfile host="Electron" modified="2024-03-26T13:04:36.453Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.0.4 Chrome/120.0.6099.109 Electron/28.1.0 Safari/537.36" etag="3vwl_tzv_uvTNH1MAKXQ" version="24.0.4" type="device">
+<mxfile host="Electron" modified="2024-03-27T09:14:37.489Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.0.4 Chrome/120.0.6099.109 Electron/28.1.0 Safari/537.36" etag="f0PCTJgxJ55HK8rP2wm9" version="24.0.4" type="device">
   <diagram name="Page-1" id="GdpQ8QCCqcLm-3y2WRk1">
-    <mxGraphModel dx="1050" dy="629" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1434" dy="844" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -31,7 +31,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="LfLRc4J-cQUVyY4kK2IP-1" value="Compte" style="swimlane;fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=29;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;whiteSpace=wrap;" parent="1" vertex="1">
-          <mxGeometry x="350" y="460" width="200" height="246" as="geometry" />
+          <mxGeometry x="350" y="460" width="200" height="277" as="geometry" />
         </mxCell>
         <mxCell id="LfLRc4J-cQUVyY4kK2IP-3" value="- nom&amp;nbsp;: String" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" parent="LfLRc4J-cQUVyY4kK2IP-1" vertex="1">
           <mxGeometry y="29" width="200" height="25" as="geometry" />
@@ -54,8 +54,11 @@
         <mxCell id="I-WAB1I7mNiSq00kfVB7-61" value="- nombreRttemployéRestant : int" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" parent="LfLRc4J-cQUVyY4kK2IP-1" vertex="1">
           <mxGeometry y="185" width="200" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="I-WAB1I7mNiSq00kfVB7-60" value="- nombreCongéPayéRestant : float" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" parent="LfLRc4J-cQUVyY4kK2IP-1" vertex="1">
+        <mxCell id="I-WAB1I7mNiSq00kfVB7-60" value="- congéPayé_N-1 : float" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" parent="LfLRc4J-cQUVyY4kK2IP-1" vertex="1">
           <mxGeometry y="215" width="200" height="31" as="geometry" />
+        </mxCell>
+        <mxCell id="DVMsb-vm6rQO4qN8ICwJ-1" value="- congéPayé_N : float" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;" vertex="1" parent="LfLRc4J-cQUVyY4kK2IP-1">
+          <mxGeometry y="246" width="200" height="31" as="geometry" />
         </mxCell>
         <mxCell id="LfLRc4J-cQUVyY4kK2IP-6" value="Role" style="swimlane;fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=29;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;whiteSpace=wrap;" parent="1" vertex="1">
           <mxGeometry x="660" y="390" width="140" height="54" as="geometry" />
