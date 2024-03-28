@@ -12,5 +12,6 @@ public interface AbsenceOrganizationRepository extends JpaRepository<AbsenceOrga
 
 	List<AbsenceOrganization> findByOrganization(Organization organization);
 	List<AbsenceOrganization> findByAbsenceOrganizationStatus(AbsenceOrganizationStatus status);
+	List<AbsenceOrganization> findByOrganizationAndAbsenceOrganizationStatus(Organization organization, AbsenceOrganizationStatus status);
 	
 }

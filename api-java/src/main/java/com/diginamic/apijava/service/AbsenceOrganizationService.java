@@ -121,6 +121,9 @@ public class AbsenceOrganizationService {
 		if(LocalDate.parse(absenceOrganizationToCreate.getDate()).isBefore(LocalDate.now())) {
 			throw new AbsenceStartEndDateException("The date cannot be in the past");
 		}
+		if(LocalDate.parse(absenceOrganizationToCreate.getDate()).getYear() != LocalDate.now().getYear()) {
+			throw new AbsenceStartEndDateException("The absence request must be in the current year");
+		}
 		AbsenceOrganization a = new AbsenceOrganization();
 		a.setDate(LocalDate.parse(absenceOrganizationToCreate.getDate()));
 		a.setAbsenceOrganizationStatus(AbsenceOrganizationStatus.INITIALE);
