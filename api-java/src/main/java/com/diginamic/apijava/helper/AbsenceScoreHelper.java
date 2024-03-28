@@ -51,7 +51,7 @@ public class AbsenceScoreHelper {
 			throw new EntityNotFoundException("Current user has no organization");
 		}
 		List<AbsenceOrganization> absencesOrganizationValidated = absenceOrganizationRepository.findByOrganizationAndAbsenceOrganizationStatus(account.getGroupe().getDepartment().getOrganization(), AbsenceOrganizationStatus.VALIDEE);
-		List<LocalDate> absencesOrganizationValidatedDate = absencesOrganizationValidated.stream().map(a -> a.getDate()).toList();
+		List<LocalDate> absencesOrganizationValidatedDate = absencesOrganizationValidated.stream().filter(a -> (a.getDate().getYear() == LocalDate.now().getYear() || a.getDate().getYear() == LocalDate.now().getYear() - 1)).map(a -> a.getDate()).toList();
 		for(Absence absence : absencesValidated) {
 			if(absence.getAbsenceType().equals(AbsenceType.CONGE_PAYE)) {
 				if(absence.getStartDate().getYear() == LocalDate.now().getYear() - 1 && absence.getEndDate().getYear() == LocalDate.now().getYear() - 1) {

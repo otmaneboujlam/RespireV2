@@ -11,5 +11,6 @@ public interface AbsenceRepository extends JpaRepository<Absence, Integer> {
 
 	List<Absence> findByAccount(Account account);
 	List<Absence> findByAccountAndAbsenceStatus(Account account, AbsenceStatus status);
+	List<Absence> findByAbsenceStatus(AbsenceStatus status);
 	
 }

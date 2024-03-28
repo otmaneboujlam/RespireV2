@@ -9,11 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import com.diginamic.apijava.entity.Absence;
 import com.diginamic.apijava.entity.AbsenceOrganization;
 import com.diginamic.apijava.entity.Account;
 import com.diginamic.apijava.entity.Organization;
 import com.diginamic.apijava.enums.AbsenceOrganizationStatus;
 import com.diginamic.apijava.enums.AbsenceOrganizationType;
+import com.diginamic.apijava.enums.AbsenceStatus;
+import com.diginamic.apijava.enums.AbsenceType;
 import com.diginamic.apijava.helper.AbsenceOrganizationScoreHelper;
 import com.diginamic.apijava.helper.AbsenceScoreHelper;
 import com.diginamic.apijava.repository.AbsenceOrganizationRepository;
@@ -82,11 +85,125 @@ public class CronService {
 		System.out.println("CRON : Handle Night Treatment");
 		
 		//Absence Organization
-		List<AbsenceOrganization> absencesOrganizationInitial = absenceOrganizationRepository.findByAbsenceOrganizationStatus(AbsenceOrganizationStatus.INITIALE);
+		List<Organization> organizations = organizationRepository.findAll();
+		for(Organization organization : organizations) {
+			HandleNightTreatmentAbsenceOrganization(organization);
+		}
+		
+		//Absence Account
+		List<Account> accounts = accountRepository.findAll();
+		for(Account account : accounts) {
+			HandleNightTreatmentAbsence(account);
+		}
+		
+	}
+	
+	public void HandleNightTreatmentAbsence(Account account) {
+		List<Absence> absencesInitial = absenceRepository.findByAccountAndAbsenceStatus(account, AbsenceStatus.INITIALE);
+		Collections.sort(absencesInitial);
+		List<Absence> absencesThisYearInitial = absencesInitial.stream().filter(a -> a.getStartDate().getYear() == LocalDate.now().getYear()).toList();
+		if(absencesThisYearInitial.size() > 0) {
+			List<AbsenceOrganization> absencesOrganizationValidated = absenceOrganizationRepository.findByOrganizationAndAbsenceOrganizationStatus(account.getGroupe().getDepartment().getOrganization(), AbsenceOrganizationStatus.VALIDEE);
+			List<LocalDate> absencesOrganizationThisYearValidatedDate = absencesOrganizationValidated.stream().filter(a -> a.getDate().getYear() == LocalDate.now().getYear()).map(a -> a.getDate()).toList();
+			List<Absence> absencesValidated = absenceRepository.findByAccountAndAbsenceStatus(account, AbsenceStatus.VALIDEE);
+			List<Absence> absencesWaitingValidation = absenceRepository.findByAccountAndAbsenceStatus(account, AbsenceStatus.EN_ATTENTE_VALIDATION);
+			List<Absence> absencesThisYearWaitingValidationNew = new ArrayList<Absence>();
+			for(Absence absence : absencesThisYearInitial) {
+				if(absence.getStartDate().getDayOfWeek().equals(java.time.DayOfWeek.SATURDAY) || absence.getStartDate().getDayOfWeek().equals(java.time.DayOfWeek.SUNDAY)) {
+					absence.setAbsenceStatus(AbsenceStatus.REJETEE);
+					absenceRepository.save(absence);
+				}
+				else if(((absence.getAbsenceType().equals(AbsenceType.RTT_EMPLOYEE)) && (absenceScoreHelper.calculateAbsenceScore(account).getEmployeeRttSolde() <= 0)) || ((absence.getAbsenceType().equals(AbsenceType.CONGE_PAYE)) && ((absenceScoreHelper.calculateAbsenceScore(account).getPaidHolidayLastYearSolde() + absenceScoreHelper.calculateAbsenceScore(account).getPaidHolidayThisYearSolde()) <= 0))) {
+					absence.setAbsenceStatus(AbsenceStatus.REJETEE);
+					absenceRepository.save(absence);
+				}
+				else if(absencesOrganizationThisYearValidatedDate.contains(absence.getStartDate()) || absencesOrganizationThisYearValidatedDate.contains(absence.getEndDate())) {
+					absence.setAbsenceStatus(AbsenceStatus.REJETEE);
+					absenceRepository.save(absence);
+				}
+				else if(isOverLap(absence,absencesValidated,absencesWaitingValidation,absencesThisYearWaitingValidationNew)) {
+					absence.setAbsenceStatus(AbsenceStatus.REJETEE);
+					absenceRepository.save(absence);
+				}
+				else {
+					absence.setAbsenceStatus(AbsenceStatus.EN_ATTENTE_VALIDATION);
+					absenceRepository.save(absence);
+					absencesThisYearWaitingValidationNew.add(absence);
+				}	
+			}
+		}
+	}
+	
+	public boolean isOverLap(Absence absence, List<Absence> absencesValidated, List<Absence> absencesWaitingValidation, List<Absence> absencesThisYearWaitingValidationNew) {
+		for(Absence absenceValidated : absencesValidated) {
+			if(absence.getStartDate().isEqual(absenceValidated.getStartDate())) {
+				return true;
+			}
+			else if (absence.getStartDate().isEqual(absenceValidated.getEndDate())) {
+				return true;
+			}
+			else if(absence.getEndDate().isEqual(absenceValidated.getStartDate())) {
+				return true;
+			}
+			else if (absence.getEndDate().isEqual(absenceValidated.getEndDate())) {
+				return true;
+			}
+			else if (absence.getStartDate().isAfter(absenceValidated.getStartDate()) && absence.getStartDate().isBefore(absenceValidated.getEndDate())) {
+				return true;
+			}
+			else if (absence.getEndDate().isAfter(absenceValidated.getStartDate()) && absence.getEndDate().isBefore(absenceValidated.getEndDate())) {
+				return true;
+			}
+		}
+		for(Absence absenceWaitingValidation : absencesWaitingValidation) {
+			if(absence.getStartDate().isEqual(absenceWaitingValidation.getStartDate())) {
+				return true;
+			}
+			else if (absence.getStartDate().isEqual(absenceWaitingValidation.getEndDate())) {
+				return true;
+			}
+			else if(absence.getEndDate().isEqual(absenceWaitingValidation.getStartDate())) {
+				return true;
+			}
+			else if (absence.getEndDate().isEqual(absenceWaitingValidation.getEndDate())) {
+				return true;
+			}
+			else if (absence.getStartDate().isAfter(absenceWaitingValidation.getStartDate()) && absence.getStartDate().isBefore(absenceWaitingValidation.getEndDate())) {
+				return true;
+			}
+			else if (absence.getEndDate().isAfter(absenceWaitingValidation.getStartDate()) && absence.getEndDate().isBefore(absenceWaitingValidation.getEndDate())) {
+				return true;
+			}
+		}
+		for(Absence absenceThisYearWaitingValidationNew : absencesThisYearWaitingValidationNew) {
+			if(absence.getStartDate().isEqual(absenceThisYearWaitingValidationNew.getStartDate())) {
+				return true;
+			}
+			else if (absence.getStartDate().isEqual(absenceThisYearWaitingValidationNew.getEndDate())) {
+				return true;
+			}
+			else if(absence.getEndDate().isEqual(absenceThisYearWaitingValidationNew.getStartDate())) {
+				return true;
+			}
+			else if (absence.getEndDate().isEqual(absenceThisYearWaitingValidationNew.getEndDate())) {
+				return true;
+			}
+			else if (absence.getStartDate().isAfter(absenceThisYearWaitingValidationNew.getStartDate()) && absence.getStartDate().isBefore(absenceThisYearWaitingValidationNew.getEndDate())) {
+				return true;
+			}
+			else if (absence.getEndDate().isAfter(absenceThisYearWaitingValidationNew.getStartDate()) && absence.getEndDate().isBefore(absenceThisYearWaitingValidationNew.getEndDate())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public void HandleNightTreatmentAbsenceOrganization(Organization organization) {
+		List<AbsenceOrganization> absencesOrganizationInitial = absenceOrganizationRepository.findByOrganizationAndAbsenceOrganizationStatus(organization, AbsenceOrganizationStatus.INITIALE);
 		Collections.sort(absencesOrganizationInitial);
 		List<AbsenceOrganization> absencesOrganizationThisYearInitial = absencesOrganizationInitial.stream().filter(a -> a.getDate().getYear() == LocalDate.now().getYear()).toList();
 		if(absencesOrganizationThisYearInitial.size() > 0) {
-			List<AbsenceOrganization> absencesOrganizationValidated = absenceOrganizationRepository.findByAbsenceOrganizationStatus(AbsenceOrganizationStatus.VALIDEE);
+			List<AbsenceOrganization> absencesOrganizationValidated = absenceOrganizationRepository.findByOrganizationAndAbsenceOrganizationStatus(organization, AbsenceOrganizationStatus.VALIDEE);
 			List<LocalDate> absencesOrganizationThisYearValidatedDate = absencesOrganizationValidated.stream().filter(a -> a.getDate().getYear() == LocalDate.now().getYear()).map(a -> a.getDate()).toList();
 			List<LocalDate> absencesOrganizationThisYearValidatedDateNew = new ArrayList<LocalDate>();
 			for(AbsenceOrganization absenceOrganization : absencesOrganizationThisYearInitial) {
@@ -95,7 +212,7 @@ public class CronService {
 						absenceOrganization.setAbsenceOrganizationStatus(AbsenceOrganizationStatus.REJETEE);
 						absenceOrganizationRepository.save(absenceOrganization);
 					}
-					else if(absenceOrganizationScoreHelper.calculateAbsenceOrganizationScore(absenceOrganization.getOrganization()).getEmployerRttSolde() <= 0) {
+					else if(absenceOrganizationScoreHelper.calculateAbsenceOrganizationScore(organization).getEmployerRttSolde() <= 0) {
 						absenceOrganization.setAbsenceOrganizationStatus(AbsenceOrganizationStatus.REJETEE);
 						absenceOrganizationRepository.save(absenceOrganization);
 					}
@@ -110,7 +227,7 @@ public class CronService {
 					}
 				}
 				else if(absenceOrganization.getAbsenceOrganizationType().equals(AbsenceOrganizationType.JOUR_FERIE)) {
-					if(absenceOrganizationScoreHelper.calculateAbsenceOrganizationScore(absenceOrganization.getOrganization()).getPublicHolidaySolde() <= 0) {
+					if(absenceOrganizationScoreHelper.calculateAbsenceOrganizationScore(organization).getPublicHolidaySolde() <= 0) {
 						absenceOrganization.setAbsenceOrganizationStatus(AbsenceOrganizationStatus.REJETEE);
 						absenceOrganizationRepository.save(absenceOrganization);
 					}
@@ -126,8 +243,6 @@ public class CronService {
 				}
 			}
 		}
-		
-		//Absence Account
 	}
 	
 }
