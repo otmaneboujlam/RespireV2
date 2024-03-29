@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.diginamic.apijava.dto.AbsenceDto;
 import com.diginamic.apijava.dto.AbsencePostDto;
+import com.diginamic.apijava.dto.AbsenceStatusUpdateDto;
 import com.diginamic.apijava.entity.Absence;
 import com.diginamic.apijava.entity.Account;
 import com.diginamic.apijava.entity.Groupe;
@@ -228,4 +229,47 @@ public class AbsenceService {
 		}
 		absenceRepository.deleteById(id);
 	}
+	
+	public AbsenceDto updateStatus(AbsenceStatusUpdateDto updatedAbsenceStatus, String email) {
+		Optional<Account> currentUserOpt = accountRepository.findFirstByEmail(email);
+		if(currentUserOpt.isEmpty()) {
+			throw new EntityNotFoundException("Current user not found");
+		}
+		Optional<Absence> absenceOpt = absenceRepository.findById(updatedAbsenceStatus.getId());
+		if(absenceOpt.isEmpty()) {
+			throw new EntityNotFoundException("Entity not found");
+		}
+		Absence absence = absenceOpt.get();
+		Optional<Role> adminRoleOpt = roleRepository.findFirstByName("ROLE_ADMIN");
+		Optional<Role> managerRoleOpt = roleRepository.findFirstByName("ROLE_MANAGER");
+		if(adminRoleOpt.isEmpty() || managerRoleOpt.isEmpty()) {
+			throw new RolesHaveNotBeenCreatedException("Roles have not been created");
+		}
+		Boolean isAdmin = currentUserOpt.get().getRoles().contains(adminRoleOpt.get());
+		Boolean isManagerOfUser = false;	
+		Optional<Groupe> groupOwnedByCurrentUserOpt = groupeRepository.findFirstByOwner(currentUserOpt.get());
+		if(!groupOwnedByCurrentUserOpt.isEmpty()) {
+			if(groupOwnedByCurrentUserOpt.get().getId() == absence.getAccount().getGroupe().getId()) {
+				isManagerOfUser = true;
+			}
+		}
+		if( !isAdmin && !isManagerOfUser) {
+			throw new EntityAccessDeniedException("You do not have the right to process this absence");
+		}
+		if(!absence.getAbsenceStatus().equals(AbsenceStatus.EN_ATTENTE_VALIDATION)) {
+			throw new EntityAccessDeniedException("You do not have the right to process this absence");
+		}
+		if(!updatedAbsenceStatus.getAbsenceStatus().equals(AbsenceStatus.VALIDEE.toString()) && !updatedAbsenceStatus.getAbsenceStatus().equals(AbsenceStatus.REJETEE.toString())) {
+			throw new StatusNotFoundException("Only validated and rejected statuses are accepted");
+		}
+		if(updatedAbsenceStatus.getAbsenceStatus().equals(AbsenceStatus.VALIDEE.toString())) {
+			absence.setAbsenceStatus(AbsenceStatus.VALIDEE);
+		}
+		if(updatedAbsenceStatus.getAbsenceStatus().equals(AbsenceStatus.REJETEE.toString())) {
+			absence.setAbsenceStatus(AbsenceStatus.REJETEE);
+		}
+		
+		return absenceDtoMapper.toDto(absenceRepository.save(absence));
+	}
+	
 }

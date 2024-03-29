@@ -1,6 +1,7 @@
 package com.diginamic.apijava.exception;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -103,6 +104,17 @@ public class ExceptionHandlerControllerAdvice {
 	@ExceptionHandler(AbsenceStartEndDateException.class)
 	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
 	public ErrorDto handleExceptionAbsenceStartEndDate(Exception exception, WebRequest request) {
+		//exception.printStackTrace();
+		return new ErrorDto(
+				HttpStatus.BAD_REQUEST.value(), 
+				exception.getMessage(), 
+				request.getDescription(false)
+				);
+	}
+	
+	@ExceptionHandler(HttpMessageNotReadableException.class)
+	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
+	public ErrorDto handleExceptionHttpMessageNotReadable(Exception exception, WebRequest request) {
 		//exception.printStackTrace();
 		return new ErrorDto(
 				HttpStatus.BAD_REQUEST.value(), 
