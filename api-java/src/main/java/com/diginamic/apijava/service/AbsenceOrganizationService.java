@@ -133,4 +133,12 @@ public class AbsenceOrganizationService {
 		return absenceOrganizationDtoMapper.toDto(absenceOrganizationRepository.save(a));
 	}
 	
+	public void deleteById(Integer id) {
+		Optional<AbsenceOrganization> absenceOrganizationOpt = absenceOrganizationRepository.findById(id);
+		if(absenceOrganizationOpt.isEmpty()) {
+			throw new EntityNotFoundException("Entity not found");
+		}
+		absenceOrganizationRepository.deleteById(id);
+	}
+	
 }

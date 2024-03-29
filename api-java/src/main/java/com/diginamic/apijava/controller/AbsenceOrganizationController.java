@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -55,6 +56,12 @@ public class AbsenceOrganizationController {
 	@PostMapping
 	public AbsenceOrganizationDto createAbsence(@RequestBody @Valid AbsenceOrganizationPostDto absenceOrganizationToCreate) {
 		return absenceOrganizationService.create(absenceOrganizationToCreate);
+	}
+	
+	@Secured({"ROLE_ADMIN"})
+	@DeleteMapping("/{id}")
+	public void deleteOne(@PathVariable("id") Integer id) {
+		absenceOrganizationService.deleteById(id);
 	}
 
 }

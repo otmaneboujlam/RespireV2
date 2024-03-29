@@ -198,4 +198,34 @@ public class AbsenceService {
 		return absenceDtoMapper.toDto(absenceRepository.save(a));
 	}
 
+	public void deleteById(Integer id, String email) {
+		Optional<Account> currentUserOpt = accountRepository.findFirstByEmail(email);
+		if(currentUserOpt.isEmpty()) {
+			throw new EntityNotFoundException("Current user not found");
+		}
+		Optional<Absence> absenceOpt = absenceRepository.findById(id);
+		if(absenceOpt.isEmpty()) {
+			throw new EntityNotFoundException("Entity not found");
+		}
+		Optional<Role> adminRoleOpt = roleRepository.findFirstByName("ROLE_ADMIN");
+		if(adminRoleOpt.isEmpty()) {
+			throw new RolesHaveNotBeenCreatedException("Roles have not been created");
+		}
+		Boolean isAdmin = currentUserOpt.get().getRoles().contains(adminRoleOpt.get());
+		Boolean isUsersAbsence = false;	
+		if(absenceOpt.get().getAccount().getId() == currentUserOpt.get().getId()) {
+			isUsersAbsence = true;
+		}
+		if( !isAdmin && !isUsersAbsence) {
+			throw new EntityAccessDeniedException("You do not have the right to delete this entity");
+		}
+		if(absenceOpt.get().getAbsenceStatus().equals(AbsenceStatus.VALIDEE)) {
+			if(absenceOpt.get().getStartDate().isBefore(LocalDate.now())) {
+				if(!isAdmin) {
+					throw new EntityAccessDeniedException("You do not have the right to delete this entity");
+				}
+			}
+		}
+		absenceRepository.deleteById(id);
+	}
 }
