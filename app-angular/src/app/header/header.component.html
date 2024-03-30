@@ -1,0 +1,24 @@
+<header class="p-3 bg-dark text-white">
+  <div class="container">
+    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+
+      <a routerLink="/welcome" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+        <img src="assets\favicon.png" alt="cloud" class="favicon me-1"/>
+      </a>
+
+      <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+        <li><a routerLink="/welcome" routerLinkActive="page-en-cours" class="nav-link px-2">Accueil</a></li>
+      </ul>
+
+      <div class="text-end">
+        <p *ngIf="account$" class="d-inline p-2">{{account$.firstName}}</p>
+        <button (click)="submit()" type="button" class="btn btn-warning">
+          <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512">
+            <path d="M497 273L329 441c-15 15-41 4.5-41-17v-96H152c-13.3 0-24-10.7-24-24v-96c0-13.3 10.7-24 24-24h136V88c0-21.4 25.9-32 41-17l168 168c9.3 9.4 9.3 24.6 0 34zM192 436v-40c0-6.6-5.4-12-12-12H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h84c6.6 0 12-5.4 12-12V76c0-6.6-5.4-12-12-12H96c-53 0-96 43-96 96v192c0 53 43 96 96 96h84c6.6 0 12-5.4 12-12z"/>
+          </svg>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</header>

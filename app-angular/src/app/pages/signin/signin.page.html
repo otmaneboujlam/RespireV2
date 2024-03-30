@@ -1,0 +1,40 @@
+<div class="container">
+  <h1 class="m-3 text-center">Page de connexion</h1>
+  <form #formCtrl="ngForm">
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input
+        name="email"
+        required
+        #emailCtrl="ngModel"
+        [(ngModel)]="getCompte.email"
+        type="email"
+        class="form-control"
+        id="email"
+        autocomplete="on"
+      />
+    </div>
+    <div class="form-group">
+      <label for="password">Mot de passe</label>
+      <input
+        name="password"
+        required
+        #passwordCtrl="ngModel"
+        [(ngModel)]="getCompte.password"
+        type="password"
+        class="form-control"
+        id="password"
+      />
+    </div>
+    <button
+      [disabled]="formCtrl.invalid"
+      (click)="submit()"
+      class="mt-2 btn btn-success"
+    >
+    Se connecter
+    </button>
+  </form>
+  <p *ngIf="isError" role="alert" class="alert alert-danger m-3">
+    {{errorMsg$}}
+  </p>
+</div>
