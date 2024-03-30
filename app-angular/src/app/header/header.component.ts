@@ -12,16 +12,6 @@ export class HeaderComponent {
 
   constructor(private accountService : AccountService, private router : Router){}
 
-  account$! : AccountInfo;
-
-  ngOnInit(): void {
-    this.accountService.getCurrentUser().subscribe(
-      {
-        next: account => this.account$ = account
-      }
-    );
-  }
-
   submit(){
     this.accountService.signout().subscribe({
       next: () => {
