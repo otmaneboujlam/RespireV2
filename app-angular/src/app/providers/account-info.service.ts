@@ -8,20 +8,20 @@ import { AccountInfo } from '../models/account-info';
 export class AccountInfoService {
 
   accountInfoInitialValue : AccountInfo= {
-    "id": "4",
-    "firstName": "s",
-    "lastName": "s",
-    "email": "user@respire.com",
+    "id": "",
+    "firstName": "",
+    "lastName": "",
+    "email": "",
     "image": "",
-    "paidHolidayLastYear": "1.0",
-    "paidHolidayThisYear": "3.16",
-    "employeeRtt": "6",
-    "group": "Recherche",
-    "department": "Recherche & Développement",
-    "organization": "Diginamic",
-    "startDate": "2024-03-01",
+    "paidHolidayLastYear": "",
+    "paidHolidayThisYear": "",
+    "employeeRtt": "",
+    "group": "",
+    "department": "",
+    "organization": "",
+    "startDate": "",
     "roles": [
-        "ROLE_USER"
+
     ]
 }
 

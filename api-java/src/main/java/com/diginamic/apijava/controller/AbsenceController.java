@@ -49,7 +49,7 @@ public class AbsenceController {
 	}
 	
 	@Secured({"ROLE_ADMIN", "ROLE_MANAGER", "ROLE_USER"})
-	@GetMapping("/currentUser")
+	@GetMapping("/currentuser")
 	public List<AbsenceDto> findByCurrentUser() {
 		return absenceService.findByCurrentUser(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
 	}

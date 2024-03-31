@@ -1,5 +1,5 @@
 <div class="container">
-  <h1 *ngIf="account$ != null" class="my-5">
+  <h1 class="my-5">
     Bonjour {{account$.firstName}} {{account$.lastName}}
   </h1>
   <p class="mb-3">
@@ -11,15 +11,19 @@
   <ul>
     <li>
       <span class="fst-italic">Gestion des absences</span> :
-      demande, modification et suppression des absences
+      Demande, modification et suppression des absences
     </li>
     <li>
       <span class="fst-italic">Planning des absences</span> :
       Calendrier récapitulatif de vos absences et jours fériés
     </li>
     <li>
-      <span class="fst-italic">Validation des absences</span>
-      : Suivi de vos absences
+      <span class="fst-italic">Validation demandes</span>
+      : Valider les demandes de congés de vos collaborateurs
+    </li>
+    <li>
+      <span class="fst-italic">Vues synthétiques</span>
+      : Visualiser les rapports vue par département et par jour et Histogramme par département et par jour
     </li>
     <li>
       <span class="fst-italic">Jours fériés</span> : Liste des

@@ -24,4 +24,5 @@ export class HeaderComponent {
   submit(){
     this.accountService.signout()
   }
+
 }

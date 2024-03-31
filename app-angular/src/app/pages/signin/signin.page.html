@@ -1,35 +1,38 @@
-<div class="container">
-  <h1 class="m-3 text-center">Page de connexion</h1>
-  <form #formCtrl="ngForm">
-    <div class="form-group">
-      <label for="email">Email</label>
+<div class="text-center">
+  <h1>Page de connexion</h1>
+  <img class="mb-4" src="assets\favicon.png" alt="cloud" width="72" height="72">
+  <form #formCtrl="ngForm" class="form-signin">
+    <div class="form-group p-10">
+      <label for="email" class="d-none">Email</label>
       <input
         name="email"
         required
         #emailCtrl="ngModel"
         [(ngModel)]="getCompte.email"
         type="email"
-        class="form-control"
+        class="form-control form-control-lg border-3 p-10 m-2 rounded-3"
         id="email"
         autocomplete="on"
+        placeholder="Email address"
       />
     </div>
     <div class="form-group">
-      <label for="password">Mot de passe</label>
+      <label for="password" class="d-none">Mot de passe</label>
       <input
         name="password"
         required
         #passwordCtrl="ngModel"
         [(ngModel)]="getCompte.password"
         type="password"
-        class="form-control"
+        class="form-control form-control-lg border-3 p-10 m-2 rounded-3"
         id="password"
+        placeholder="Password"
       />
     </div>
     <button
       [disabled]="formCtrl.invalid"
       (click)="submit()"
-      class="mt-2 btn btn-success"
+      class="btn btn-lg btn-primary btn-block border-3 p-10 m-2 rounded-3"
     >
     Se connecter
     </button>

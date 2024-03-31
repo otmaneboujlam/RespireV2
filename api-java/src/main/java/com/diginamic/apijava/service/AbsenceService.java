@@ -108,6 +108,7 @@ public class AbsenceService {
 		
 		return absenceRepository.findByAccount(currentUserOpt.get())
 				.stream()
+				.filter((absence) -> absence.getStartDate().getYear() >= LocalDate.now().getYear()-1)
 				.map((absence) -> absenceDtoMapper.toDto(absence)).toList();
 	}
 	

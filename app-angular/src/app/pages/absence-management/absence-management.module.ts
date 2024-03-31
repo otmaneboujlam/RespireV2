@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AbsenceManagementPage } from './absence-management.page';
+import { SharedModule } from '../../shared/shared.module';
 
 
 
@@ -9,7 +10,8 @@ import { AbsenceManagementPage } from './absence-management.page';
     AbsenceManagementPage
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    SharedModule
   ]
 })
 export class AbsenceManagementModule { }

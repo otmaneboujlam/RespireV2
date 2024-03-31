@@ -1,0 +1,60 @@
+<div class="container">
+  <h1>Mes informations</h1>
+  <div class="text-center my-2">
+    <img
+      src={{account$.image}}
+      alt="image de profil"
+      class="img-fluid img-thumbnail"
+    />
+  </div>
+  <table class="table table-hover table-dark">
+    <thead class="d-none">
+      <tr>
+        <th scope="col">Key</th>
+        <th scope="col">Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th class="w-50">Prénom</th>
+        <td>{{account$.firstName}}</td>
+      </tr>
+      <tr>
+        <td>Nom</td>
+        <td>{{account$.lastName}}</td>
+      </tr>
+      <tr>
+        <td>Email</td>
+        <td>{{account$.email}}</td>
+      </tr>
+      <tr>
+        <td>Nombre de jours de congé payé gagnés l'année dernière</td>
+        <td>{{account$.paidHolidayLastYear}}</td>
+      </tr>
+      <tr>
+        <td>Nombre de jours de congé payé gagnés cette année</td>
+        <td>{{account$.paidHolidayThisYear}}</td>
+      </tr>
+      <tr>
+        <td>Nombre de jours de RTT employé</td>
+        <td>{{account$.employeeRtt}}</td>
+      </tr>
+      <tr>
+        <td>Groupe</td>
+        <td>{{account$.group}}</td>
+      </tr>
+      <tr>
+        <td>Département</td>
+        <td>{{account$.department}}</td>
+      </tr>
+      <tr>
+        <td>Organisation</td>
+        <td>{{account$.organization}}</td>
+      </tr>
+      <tr>
+        <td>Ancienneté</td>
+        <td>{{account$.startDate}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
