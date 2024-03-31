@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { AccountService } from '../providers/account.service';
 import { AccountInfo } from '../models/account-info';
-import { Router } from '@angular/router';
+import { AccountInfoService } from '../providers/account-info.service';
 
 @Component({
   selector: 'app-header',
@@ -10,16 +10,18 @@ import { Router } from '@angular/router';
 })
 export class HeaderComponent {
 
-  constructor(private accountService : AccountService, private router : Router){}
+  firstName$! : String;
+
+  constructor(private accountService : AccountService, private accountInfoService : AccountInfoService){}
+
+  ngOnInit(): void {
+    this.accountInfoService.abonner().subscribe({
+      next: (value: AccountInfo) => this.firstName$ = value.firstName
+    })
+    this.accountService.getCurrentUser()
+  }
 
   submit(){
-    this.accountService.signout().subscribe({
-      next: () => {
-        this.router.navigateByUrl("/signin")
-      },
-      error: err => {
-        console.log(err)
-      }
-    });
+    this.accountService.signout()
   }
 }

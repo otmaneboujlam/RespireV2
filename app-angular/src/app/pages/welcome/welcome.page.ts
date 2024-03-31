@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { AccountService } from '../../providers/account.service';
 import { AccountInfo } from '../../models/account-info';
+import { AccountInfoService } from '../../providers/account-info.service';
 
 @Component({
   selector: 'app-welcome',
@@ -9,15 +9,14 @@ import { AccountInfo } from '../../models/account-info';
 })
 export class WelcomePage {
 
-  constructor(private accountService : AccountService){}
+  constructor(private accountInfoService : AccountInfoService){}
 
   account$! : AccountInfo;
 
   ngOnInit(): void {
-    this.accountService.getCurrentUser().subscribe(
-      {
-        next: account => this.account$ = account
-      }
-    );
+    this.accountInfoService.abonner().subscribe({
+      next: (value: AccountInfo) => this.account$ = value
+    })
   }
+
 }

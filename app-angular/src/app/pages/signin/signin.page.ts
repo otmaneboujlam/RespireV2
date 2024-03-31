@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AccountService } from '../../providers/account.service';
 import { AccountSignin } from '../../models/account-signin';
+import { IsLoggedInService } from '../../providers/is-logged-in.service';
 
 @Component({
   selector: 'app-signin',
@@ -10,7 +11,7 @@ import { AccountSignin } from '../../models/account-signin';
 })
 export class SigninPage {
 
-  constructor(private router: Router, private accountService : AccountService){}
+  constructor(private router: Router, private accountService : AccountService, private isLoggedIn : IsLoggedInService){}
 
   isError : boolean = false;
   errorMsg$! : String;
@@ -23,6 +24,8 @@ export class SigninPage {
   submit(){
     this.accountService.signin(this.getCompte).subscribe({
       next: compte => {
+        localStorage.setItem("TOKEN", "true");
+        this.isLoggedIn.publier(true);
         this.router.navigateByUrl("/welcome")
       },
       error: err => {

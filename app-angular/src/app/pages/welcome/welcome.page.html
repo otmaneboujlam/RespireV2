@@ -1,1 +1,29 @@
-<p>{{account$ | json}}</p>
+<div class="container">
+  <h1 *ngIf="account$ != null" class="my-5">
+    Bonjour {{account$.firstName}} {{account$.lastName}}
+  </h1>
+  <p class="mb-3">
+    Vous êtes sur le site de gestion d'absence de l'entreprise
+    DIGINAMIC.
+  </p>
+  <p></p>
+  <p>Voici les différents onglets :</p>
+  <ul>
+    <li>
+      <span class="fst-italic">Gestion des absences</span> :
+      demande, modification et suppression des absences
+    </li>
+    <li>
+      <span class="fst-italic">Planning des absences</span> :
+      Calendrier récapitulatif de vos absences et jours fériés
+    </li>
+    <li>
+      <span class="fst-italic">Validation des absences</span>
+      : Suivi de vos absences
+    </li>
+    <li>
+      <span class="fst-italic">Jours fériés</span> : Liste des
+      jours fériés et RTT employeurs
+    </li>
+  </ul>
+</div>

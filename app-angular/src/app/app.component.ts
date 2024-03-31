@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { IsLoggedInService } from './providers/is-logged-in.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,13 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'app-angular';
+  isLogged$! : boolean;
+
+  constructor(private isLoggedIn : IsLoggedInService){}
+
+  ngOnInit(){
+    this.isLoggedIn.abonner().subscribe({
+      next: (value: boolean) => {this.isLogged$ = value}
+    })
+  }
 }
