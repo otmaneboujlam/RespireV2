@@ -4,6 +4,7 @@ import { AbsenceService } from '../../providers/absence.service';
 import { AbsenceInfoService } from '../../providers/absence-info.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AbsencePost } from '../../models/absence-post';
+import { AbsenceScore } from '../../models/absence-score';
 
 @Component({
   selector: 'app-absence-management',
@@ -12,6 +13,7 @@ import { AbsencePost } from '../../models/absence-post';
 })
 export class AbsenceManagementPage {
 
+  absenceScore$! : AbsenceScore
   dateNow = new Date().toJSON().slice(0, 10);
   absencesInfo$! : [AbsenceInfo];
   absencePostInitialValue : AbsencePost = {
@@ -49,7 +51,12 @@ export class AbsenceManagementPage {
 
   handleDelete() {
     this.absenceService.deleteAbsence(this.absenceToDelete.id).subscribe({
-      next: () => {this.absenceService.getAbsences(), this.absenceToDelete = this.absenceInfoInitialValue},
+      next: () => {
+        this.absenceService.getAbsences(),
+        this.absenceToDelete = this.absenceInfoInitialValue,
+        this.absenceService.getAbsenceScore().subscribe({
+        next: value => {this.absenceScore$ = value}
+      })},
       error: err => {
         this.isError = true;
         this.errorMsg$ = err.error.message;
@@ -95,5 +102,8 @@ export class AbsenceManagementPage {
       next: (value: [AbsenceInfo]) => this.absencesInfo$ = value
     })
     this.absenceService.getAbsences()
+    this.absenceService.getAbsenceScore().subscribe({
+      next: value => {this.absenceScore$ = value}
+    })
   }
 }

@@ -5,6 +5,8 @@ import { AbsenceInfoService } from './absence-info.service';
 import { AbsencePost } from '../models/absence-post';
 import { AbsenceProcessInfoService } from './absence-process-info.service';
 import { AbsenceUpdateStatus } from '../models/absence-update-status';
+import { AbsenceScore } from '../models/absence-score';
+import { AbsenceOrganizationInfo } from '../models/absence-organization-info';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +14,24 @@ import { AbsenceUpdateStatus } from '../models/absence-update-status';
 export class AbsenceService {
 
   constructor(private http: HttpClient, private absenceInfoService : AbsenceInfoService, private absenceProcessInfoService : AbsenceProcessInfoService) { }
+
+  getAbsencesOrganization = ()=> {
+    return this.http.get<[AbsenceOrganizationInfo]>("http://localhost:8082/api/absenceorganization/organization",{
+      headers: new HttpHeaders({
+      "Content-Type": "application/json"
+      }),
+      withCredentials : true
+    })
+  }
+
+  getAbsenceScore = () => {
+    return this.http.get<AbsenceScore>("http://localhost:8082/api/currentuser/absencescore",{
+      headers: new HttpHeaders({
+      "Content-Type": "application/json"
+      }),
+      withCredentials : true
+    })
+  }
 
   getAbsences = ()=> {
     return this.http.get<[AbsenceInfo]>("http://localhost:8082/api/absence/currentuser",{

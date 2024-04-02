@@ -35,7 +35,7 @@ export class PlanningPage {
 		if (type === 'JOUR_FERIE') {
 			return '#973c3c';
 		}
-    else return ""
+    else return "#000000"
 	};
 
   ngOnInit(): void {

@@ -12,6 +12,7 @@ import { AbsenceProcessInfoService } from '../../providers/absence-process-info.
 })
 export class AbsenceProcessPage {
 
+  isAbsencesInfoOk : boolean = false;
   absencesInfo$! : [AbsenceInfo];
   absenceInfoInitialValue : AbsenceInfo= {
     "id": "0",
@@ -54,7 +55,7 @@ export class AbsenceProcessPage {
 
   ngOnInit(): void {
     this.absenceProcessInfoService.abonner().subscribe({
-      next: (value: [AbsenceInfo]) => this.absencesInfo$ = value
+      next: (value: [AbsenceInfo]) => {this.absencesInfo$ = value}
     })
     this.absenceService.getAbsencesProcess()
   }

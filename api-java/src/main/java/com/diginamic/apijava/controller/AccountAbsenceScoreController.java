@@ -11,7 +11,7 @@ import com.diginamic.apijava.dto.AbsenceScoreDto;
 import com.diginamic.apijava.service.AccountAbsenceScoreService;
 
 @RestController
-@RequestMapping("/api/currentUser/absenceScore")
+@RequestMapping("/api/currentuser/absencescore")
 @EnableMethodSecurity(securedEnabled = true)
 public class AccountAbsenceScoreController {
 	

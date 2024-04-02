@@ -1,1 +1,23 @@
-<p>public-holiday works!</p>
+<div class="container">
+  <h1>Liste des jours fériés et RTT employeurs - {{dateNow}}</h1>
+  <div class="table-responsive">
+    <table class="table table-hover table-dark">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Type</th>
+          <th scope="col">Date</th>
+          <th scope="col">Motif</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let absence of absencesOrganizationInfo$">
+          <th scope="row">{{absencesOrganizationInfo$.indexOf(absence)+1}}</th>
+          <td>{{absence.absenceType}}</td>
+          <td>{{absence.date}}</td>
+          <td>{{absence.reason}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

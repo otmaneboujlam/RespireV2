@@ -28,6 +28,15 @@ public class AccountService {
 		if(currentUserOpt.isEmpty()) {
 			throw new EntityNotFoundException("Current user not found");
 		}
+		if(currentUserOpt.get().getGroupe() == null) {
+			throw new EntityNotFoundException("Current user has no group");
+		}
+		if(currentUserOpt.get().getGroupe().getDepartment() == null) {
+			throw new EntityNotFoundException("Current user has no department");
+		}
+		if(currentUserOpt.get().getGroupe().getDepartment().getOrganization() == null) {
+			throw new EntityNotFoundException("Current user has no organization");
+		}
 		return accountInfoDtoMapper.toDto(currentUserOpt.get());
 	}
 }
