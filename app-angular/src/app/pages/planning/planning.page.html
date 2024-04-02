@@ -1,1 +1,8 @@
-<p>planning works!</p>
+<div class="container">
+  <h1>Calendrier récapitulatif de mes absences et jours fériés</h1>
+  <full-calendar
+    *ngIf="isOkAbsence && isOkAbsenceOrganization"
+    [options]="calendarOptions"
+    [events]="events"
+  ></full-calendar>
+</div>

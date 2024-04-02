@@ -21,7 +21,7 @@ import com.diginamic.apijava.service.AbsenceOrganizationService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/absenceOrganization")
+@RequestMapping("/api/absenceorganization")
 @EnableMethodSecurity(securedEnabled = true)
 public class AbsenceOrganizationController {
 	

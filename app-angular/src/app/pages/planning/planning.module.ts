@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PlanningPage } from './planning.page';
+import { FullCalendarModule } from '@fullcalendar/angular';
 
 
 
@@ -9,7 +10,8 @@ import { PlanningPage } from './planning.page';
     PlanningPage
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    FullCalendarModule
   ],
   exports: [
     PlanningPage

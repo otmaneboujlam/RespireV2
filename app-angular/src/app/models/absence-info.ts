@@ -1,7 +1,7 @@
 export interface AbsenceInfo {
   id : String;
-  startDate: String;
-  endDate: String;
+  startDate: string;
+  endDate: string;
   reason: String;
   absenceStatus: String;
   absenceType: String;
