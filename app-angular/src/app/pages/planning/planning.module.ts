@@ -10,6 +10,9 @@ import { PlanningPage } from './planning.page';
   ],
   imports: [
     CommonModule
+  ],
+  exports: [
+    PlanningPage
   ]
 })
 export class PlanningModule { }

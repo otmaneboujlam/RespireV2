@@ -10,6 +10,9 @@ import { SyntheticViewPage } from './synthetic-view.page';
   ],
   imports: [
     CommonModule
+  ],
+  exports: [
+    SyntheticViewPage
   ]
 })
 export class SyntheticViewModule { }

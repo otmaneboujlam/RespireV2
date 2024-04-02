@@ -10,6 +10,9 @@ import { AbsenceProcessPage } from './absence-process.page';
   ],
   imports: [
     CommonModule
+  ],
+  exports: [
+    AbsenceProcessPage
   ]
 })
 export class AbsenceProcessModule { }

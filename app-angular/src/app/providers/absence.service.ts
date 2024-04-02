@@ -22,4 +22,13 @@ export class AbsenceService {
       }
     );
   }
+
+  deleteAbsence = (id : String)=> {
+    return this.http.delete<any>("http://localhost:8082/api/absence/"+id,{
+      headers: new HttpHeaders({
+      "Content-Type": "application/json"
+      }),
+      withCredentials : true
+    });
+  }
 }

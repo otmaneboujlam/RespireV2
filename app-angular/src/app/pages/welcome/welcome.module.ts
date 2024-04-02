@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { WelcomePage } from './welcome.page';
-import { SharedModule } from '../../shared/shared.module';
 
 
 
@@ -10,8 +9,7 @@ import { SharedModule } from '../../shared/shared.module';
     WelcomePage
   ],
   imports: [
-    CommonModule,
-    SharedModule
+    CommonModule
   ],
   exports: [
     WelcomePage

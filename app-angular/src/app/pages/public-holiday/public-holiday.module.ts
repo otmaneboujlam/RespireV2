@@ -10,6 +10,9 @@ import { PublicHolidayPage } from './public-holiday.page';
   ],
   imports: [
     CommonModule
+  ],
+  exports: [
+    PublicHolidayPage
   ]
 })
 export class PublicHolidayModule { }

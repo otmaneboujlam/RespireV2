@@ -10,6 +10,9 @@ import { ProfilePage } from './profile.page';
   ],
   imports: [
     CommonModule
+  ],
+  exports: [
+    ProfilePage
   ]
 })
 export class ProfileModule { }

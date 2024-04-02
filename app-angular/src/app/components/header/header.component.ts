@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { AccountService } from '../providers/account.service';
-import { AccountInfo } from '../models/account-info';
-import { AccountInfoService } from '../providers/account-info.service';
+import { AccountService } from '../../providers/account.service';
+import { AccountInfo } from '../../models/account-info';
+import { AccountInfoService } from '../../providers/account-info.service';
 
 @Component({
   selector: 'app-header',
