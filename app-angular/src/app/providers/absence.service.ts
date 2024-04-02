@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AbsenceInfo } from '../models/absence-info';
 import { AbsenceInfoService } from './absence-info.service';
+import { AbsencePost } from '../models/absence-post';
 
 @Injectable({
   providedIn: 'root'
@@ -30,5 +31,14 @@ export class AbsenceService {
       }),
       withCredentials : true
     });
+  }
+
+  postAbsence = (absence : AbsencePost)=> {
+    return this.http.post<any>("http://localhost:8082/api/absence", absence,{
+      headers: new HttpHeaders({
+      "Content-Type": "application/json"
+      }),
+      withCredentials : true
+    })
   }
 }

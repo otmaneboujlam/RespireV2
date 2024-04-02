@@ -1,6 +1,14 @@
 <div class="container">
   <h1>Mes absences</h1>
-  <button class="btn btn-info ms-auto mb-1">Demander une absence</button>
+  <button
+    class="btn btn-info ms-auto mb-1"
+    (click)="openModalPost(contentPost)"
+  >
+    Demander une absence
+  </button>
+  <div *ngIf="isError" class="alert alert-danger" role="alert">
+    {{errorMsg$}}
+  </div>
   <table class="table table-hover table-dark">
     <thead>
       <tr>
@@ -39,14 +47,12 @@
                 </svg>
               </button>
             </li>
-            <li
-              *ngIf="!(absence.absenceStatus == 'VALIDEE' && absence.startDate < dateNow)"
-              class="d-inline-block mx-1"
-            >
+            <li class="d-inline-block mx-1">
               <button
+                [disabled]="(absence.absenceStatus == 'VALIDEE' && absence.startDate < dateNow)"
                 type="button"
                 class="btn btn-danger"
-                (click)="openVerticallyCentered(content, absence)"
+                (click)="openModalDelete(contentDelete, absence)"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -68,7 +74,7 @@
     </tbody>
   </table>
 </div>
-<ng-template #content let-modal>
+<ng-template #contentDelete let-modal>
   <div class="modal-header bg-dark text-white">
     <h4 class="modal-title">Suppression des absences</h4>
   </div>
@@ -95,4 +101,90 @@
       Confirmer
     </button>
   </div>
+</ng-template>
+<ng-template #contentPost let-modal>
+  <form #formCtrl="ngForm" class="form-absence-post">
+    <div class="modal-header bg-dark text-white">
+      <h4 class="modal-title">Ajouter une absence</h4>
+    </div>
+    <div class="modal-body bg-dark text-white">
+      <div class="form-group my-1">
+        <select
+          #type
+          name="type"
+          id="type"
+          class="form-select form-select-lg border-3 p-10 rounded-3"
+          required
+          [(ngModel)]="selectedValue"
+          [ngModelOptions]="{standalone: true}"
+        >
+          <option *ngFor="let t of absenceType" [ngValue]="t">
+            {{t.name}}
+          </option>
+        </select>
+      </div>
+      <div class="form-group my-1">
+        <input
+          name="startDate"
+          required
+          #startDateCtrl="ngModel"
+          [(ngModel)]="getAbsencePost.startDate"
+          type="text"
+          class="form-control form-control-lg border-3 p-10 rounded-3"
+          id="startDate"
+          autocomplete="on"
+          placeholder="Date de début : yyyy-mm-dd"
+        />
+      </div>
+      <div
+        *ngIf="!type.value.toString().startsWith('1')"
+        class="form-group my-1"
+      >
+        <input
+          name="endDate"
+          required
+          #endDateCtrl="ngModel"
+          [(ngModel)]="getAbsencePost.endDate"
+          type="text"
+          class="form-control form-control-lg border-3 p-10 rounded-3"
+          id="endDate"
+          autocomplete="on"
+          placeholder="Date de fin : yyyy-mm-dd"
+        />
+      </div>
+      <div
+        *ngIf="type.value.toString().startsWith('2')"
+        class="form-group my-1"
+      >
+        <input
+          name="reason"
+          #typeCtrl="ngModel"
+          required
+          [(ngModel)]="getAbsencePost.reason"
+          type="text"
+          class="form-control form-control-lg border-3 p-10 rounded-3"
+          id="reason"
+          autocomplete="on"
+          placeholder="Motif"
+        />
+      </div>
+    </div>
+    <div class="modal-footer bg-dark text-white">
+      <button
+        type="button"
+        class="btn btn-outline-secondary"
+        (click)="modal.close('Close click')"
+      >
+        Annuler
+      </button>
+      <button
+        [disabled]="formCtrl.invalid"
+        type="button"
+        class="btn btn-primary"
+        (click)="handlePost(); modal.close('Close click')"
+      >
+        Envoyer
+      </button>
+    </div>
+  </form>
 </ng-template>
