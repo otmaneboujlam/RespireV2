@@ -5,7 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class AbsenceInfoService {
+export class AbsenceProcessInfoService {
 
   absenceInfoInitialValue : AbsenceInfo= {
     "id": "",
@@ -15,17 +15,17 @@ export class AbsenceInfoService {
     "absenceStatus": "",
     "absenceType": "",
     "account": "",
-}
+  }
 
-  absenceInfoSub = new BehaviorSubject<[AbsenceInfo]>([this.absenceInfoInitialValue]);
+  absenceProcessInfoSub = new BehaviorSubject<[AbsenceInfo]>([this.absenceInfoInitialValue]);
 
   constructor() { }
 
   publier(absencesInfo: [AbsenceInfo]){
-    this.absenceInfoSub.next(absencesInfo);
+    this.absenceProcessInfoSub.next(absencesInfo);
   }
 
   abonner() : Observable<[AbsenceInfo]>{
-    return this.absenceInfoSub.asObservable();
+    return this.absenceProcessInfoSub.asObservable();
   }
 }

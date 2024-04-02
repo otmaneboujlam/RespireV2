@@ -3,13 +3,15 @@ import { Injectable } from '@angular/core';
 import { AbsenceInfo } from '../models/absence-info';
 import { AbsenceInfoService } from './absence-info.service';
 import { AbsencePost } from '../models/absence-post';
+import { AbsenceProcessInfoService } from './absence-process-info.service';
+import { AbsenceUpdateStatus } from '../models/absence-update-status';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AbsenceService {
 
-  constructor(private http: HttpClient, private absenceInfoService : AbsenceInfoService) { }
+  constructor(private http: HttpClient, private absenceInfoService : AbsenceInfoService, private absenceProcessInfoService : AbsenceProcessInfoService) { }
 
   getAbsences = ()=> {
     return this.http.get<[AbsenceInfo]>("http://localhost:8082/api/absence/currentuser",{
@@ -35,6 +37,28 @@ export class AbsenceService {
 
   postAbsence = (absence : AbsencePost)=> {
     return this.http.post<any>("http://localhost:8082/api/absence", absence,{
+      headers: new HttpHeaders({
+      "Content-Type": "application/json"
+      }),
+      withCredentials : true
+    })
+  }
+
+  getAbsencesProcess = ()=> {
+    return this.http.get<[AbsenceInfo]>("http://localhost:8082/api/absence/group/EN_ATTENTE_VALIDATION",{
+      headers: new HttpHeaders({
+      "Content-Type": "application/json"
+      }),
+      withCredentials : true
+    }).subscribe(
+      {
+        next: absencesInfo => this.absenceProcessInfoService.publier(absencesInfo)
+      }
+    );
+  }
+
+  putAbsenceProcess = (absence : AbsenceUpdateStatus)=> {
+    return this.http.put<any>("http://localhost:8082/api/absence/process", absence,{
       headers: new HttpHeaders({
       "Content-Type": "application/json"
       }),

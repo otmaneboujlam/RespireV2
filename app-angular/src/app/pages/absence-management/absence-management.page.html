@@ -32,7 +32,11 @@
         <td>
           <ul class="p-0 m-0 text-center">
             <li class="d-inline-block mx-1">
-              <button type="button" class="btn btn-warning">
+              <button
+                type="button"
+                class="btn btn-warning"
+                [disabled]="!(absence.absenceStatus == 'INITIALE' || absence.absenceStatus == 'REJETEE')"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
