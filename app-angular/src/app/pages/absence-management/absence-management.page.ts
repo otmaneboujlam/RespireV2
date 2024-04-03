@@ -67,12 +67,13 @@ export class AbsenceManagementPage {
   constructor(private absenceService : AbsenceService, private absenceInfoService : AbsenceInfoService, private modalService: NgbModal){}
 
   handlePut() {
-    console.log(this.absenceToUpdate);
-    console.log(this.getAbsencePut);
     this.getAbsencePut.id = this.absenceToUpdate.id;
     this.getAbsencePut.absenceType = this.selectedValuePut.name;
     if(this.getAbsencePut.absenceType == "RTT_EMPLOYEE"){
       this.getAbsencePut.endDate = this.getAbsencePut.startDate;
+    }
+    if(this.getAbsencePut.absenceType == "RTT_EMPLOYEE" || this.getAbsencePut.absenceType == "CONGE_PAYE"){
+      this.getAbsencePut.reason = "";
     }
     this.absenceService.putAbsence(this.getAbsencePut).subscribe({
       next: () => {
@@ -131,6 +132,16 @@ export class AbsenceManagementPage {
   }
 
   openModalUpdate(content: TemplateRef<any>, absence : AbsenceInfo) {
+    this.getAbsencePut = absence;
+    if(absence.absenceType === "CONGE_PAYE") {
+      this.selectedValuePut = this.absenceType[0];
+    }
+    else if(absence.absenceType === "RTT_EMPLOYEE") {
+      this.selectedValuePut = this.absenceType[1];
+    }
+    else {
+      this.selectedValuePut = this.absenceType[2];
+    }
 		this.modalService.open(content, { centered: true });
     this.absenceToUpdate = absence;
 	}

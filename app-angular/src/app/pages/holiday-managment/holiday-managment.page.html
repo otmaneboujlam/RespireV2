@@ -34,6 +34,7 @@
             <ul class="p-0 m-0 text-center">
               <li class="d-inline-block mx-1">
                 <button
+                  (click)="openModalUpdate(contentPut, absence)"
                   type="button"
                   class="btn btn-warning"
                   [disabled]="!(absence.absenceStatus == 'INITIALE' || absence.absenceStatus == 'REJETEE')"
@@ -185,6 +186,86 @@
         (click)="handlePost(); modal.close('Close click')"
       >
         Envoyer
+      </button>
+    </div>
+  </form>
+</ng-template>
+<ng-template #contentPut let-modal>
+  <form #formPutCtrl="ngForm" class="form-absence-put">
+    <div class="modal-header bg-dark text-white">
+      <h4 class="modal-title">Modifier une absence</h4>
+    </div>
+    <div class="modal-body bg-dark text-white">
+      <div class="form-group my-1">
+        <select
+          #type
+          name="type"
+          id="type"
+          class="form-select form-select-lg border-3 p-10 rounded-3"
+          required
+          [(ngModel)]="selectedValuePut"
+          [ngModelOptions]="{standalone: true}"
+        >
+          <option *ngFor="let t of absenceType" [ngValue]="t">
+            {{t.name}}
+          </option>
+        </select>
+      </div>
+      <div class="form-group my-1">
+        <input
+          name="date"
+          required
+          #dateCtrl="ngModel"
+          [(ngModel)]="getAbsencePut.date"
+          type="text"
+          class="form-control form-control-lg border-3 p-10 rounded-3"
+          id="date"
+          autocomplete="on"
+          placeholder="Date : yyyy-mm-dd"
+        />
+      </div>
+      <div class="form-group my-1">
+        <input
+          name="organization"
+          required
+          #organizationCtrl="ngModel"
+          [(ngModel)]="getAbsencePut.organization"
+          type="text"
+          class="form-control form-control-lg border-3 p-10 rounded-3"
+          id="organization"
+          autocomplete="on"
+          placeholder="Organisation"
+        />
+      </div>
+      <div class="form-group my-1">
+        <input
+          name="reason"
+          #typeCtrl="ngModel"
+          required
+          [(ngModel)]="getAbsencePut.reason"
+          type="text"
+          class="form-control form-control-lg border-3 p-10 rounded-3"
+          id="reason"
+          autocomplete="on"
+          placeholder="Motif"
+        />
+      </div>
+    </div>
+    <div class="modal-footer bg-dark text-white">
+      <button
+        type="button"
+        class="btn btn-outline-secondary"
+        (click)="modal.close('Close click')"
+      >
+        Annuler
+      </button>
+      <button
+        [disabled]="formPutCtrl.invalid"
+        type="button"
+        class="btn btn-primary"
+        (click)="handlePut(); modal.close('Close click')"
+      >
+        Confirmer
       </button>
     </div>
   </form>

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.diginamic.apijava.dto.AbsenceOrganizationDto;
 import com.diginamic.apijava.dto.AbsenceOrganizationPostDto;
+import com.diginamic.apijava.dto.AbsenceOrganizationPutDto;
 import com.diginamic.apijava.entity.AbsenceOrganization;
 import com.diginamic.apijava.entity.Account;
 import com.diginamic.apijava.entity.Organization;
@@ -142,6 +143,44 @@ public class AbsenceOrganizationService {
 			throw new AbsenceStartEndDateException("It is not possible to delete a public holiday or an employer RTT validated in the past");
 		}
 		absenceOrganizationRepository.deleteById(id);
+	}
+	
+	public AbsenceOrganizationDto update(@Valid AbsenceOrganizationPutDto absenceOrganizationToUpdate) {
+		Optional<Organization> organizationOpt = organizationRepository.findFirstByName(absenceOrganizationToUpdate.getOrganization());
+		if(organizationOpt.isEmpty()) {
+			throw new EntityNotFoundException("Organization not found");
+		}
+		Optional<AbsenceOrganization> absenceOrganizationOpt = absenceOrganizationRepository.findById(absenceOrganizationToUpdate.getId());
+		if(absenceOrganizationOpt.isEmpty()) {
+			throw new EntityNotFoundException("Entity not found");
+		}
+		if(absenceOrganizationOpt.get().getAbsenceOrganizationStatus() == AbsenceOrganizationStatus.VALIDEE) {
+			throw new EntityAccessDeniedException("You do not have the right to update this absence");
+		}
+		try {
+			LocalDate.parse(absenceOrganizationToUpdate.getDate());
+		} catch (Exception e) {
+			throw new DateParseException(absenceOrganizationToUpdate.getDate()+" could not be parsed");
+		}
+		try {
+			AbsenceOrganizationType.valueOf(absenceOrganizationToUpdate.getAbsenceOrganizationType());
+		} catch (Exception e) {
+			throw new IllegalAbsenceTypeException(absenceOrganizationToUpdate.getAbsenceOrganizationType()+" does not correspond to a type of absence");
+		}
+		if(LocalDate.parse(absenceOrganizationToUpdate.getDate()).isBefore(LocalDate.now())) {
+			throw new AbsenceStartEndDateException("The date cannot be in the past");
+		}
+		if(LocalDate.parse(absenceOrganizationToUpdate.getDate()).getYear() != LocalDate.now().getYear()) {
+			throw new AbsenceStartEndDateException("The absence request must be in the current year");
+		}
+		
+		AbsenceOrganization a = absenceOrganizationOpt.get();
+		a.setDate(LocalDate.parse(absenceOrganizationToUpdate.getDate()));
+		a.setAbsenceOrganizationStatus(AbsenceOrganizationStatus.INITIALE);
+		a.setAbsenceOrganizationType(AbsenceOrganizationType.valueOf(absenceOrganizationToUpdate.getAbsenceOrganizationType()));
+		a.setReason(absenceOrganizationToUpdate.getReason());
+		a.setOrganization(organizationOpt.get());
+		return absenceOrganizationDtoMapper.toDto(absenceOrganizationRepository.save(a));
 	}
 	
 }

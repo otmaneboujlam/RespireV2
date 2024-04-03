@@ -10,12 +10,14 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.diginamic.apijava.dto.AbsenceOrganizationDto;
 import com.diginamic.apijava.dto.AbsenceOrganizationPostDto;
+import com.diginamic.apijava.dto.AbsenceOrganizationPutDto;
 import com.diginamic.apijava.service.AbsenceOrganizationService;
 
 import jakarta.validation.Valid;
@@ -56,6 +58,12 @@ public class AbsenceOrganizationController {
 	@PostMapping
 	public AbsenceOrganizationDto createAbsence(@RequestBody @Valid AbsenceOrganizationPostDto absenceOrganizationToCreate) {
 		return absenceOrganizationService.create(absenceOrganizationToCreate);
+	}
+	
+	@Secured({"ROLE_ADMIN"})
+	@PutMapping
+	public AbsenceOrganizationDto updateAbsence(@RequestBody @Valid AbsenceOrganizationPutDto absenceOrganizationToUpdate) {
+		return absenceOrganizationService.update(absenceOrganizationToUpdate);
 	}
 	
 	@Secured({"ROLE_ADMIN"})
