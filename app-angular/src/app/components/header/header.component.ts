@@ -10,6 +10,8 @@ import { AccountInfoService } from '../../providers/account-info.service';
 })
 export class HeaderComponent {
 
+  isMenuCollapsed = true;
+
   firstName$! : String;
 
   constructor(private accountService : AccountService, private accountInfoService : AccountInfoService){}

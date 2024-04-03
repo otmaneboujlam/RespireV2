@@ -64,7 +64,6 @@ export class HolidayManagmentPage {
   handlePut() {
     this.getAbsencePut.id = this.absenceToUpdate.id;
     this.getAbsencePut.absenceOrganizationType = this.selectedValuePut.name;
-    console.log(this.getAbsencePut)
     this.absenceOrganiztionService.putAbsenceOrganization(this.getAbsencePut).subscribe({
       next: () => {
         this.absenceOrganiztionService.getAbsencesOrganizationAll().subscribe({

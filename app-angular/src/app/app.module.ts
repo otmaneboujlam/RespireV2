@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbCollapseModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { WelcomeModule } from './pages/welcome/welcome.module';
 import { HeaderComponent } from './components/header/header.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -34,7 +34,8 @@ import { HolidayManagmentModule } from './pages/holiday-managment/holiday-managm
     SyntheticViewModule,
     PublicHolidayModule,
     ProfileModule,
-    HolidayManagmentModule
+    HolidayManagmentModule,
+    NgbCollapseModule
   ],
   providers: [],
   bootstrap: [AppComponent]

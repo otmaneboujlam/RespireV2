@@ -7,3 +7,7 @@ html, body {
 body {
   background-color: lightgrey;
 }
+
+td, th {
+  white-space: nowrap;
+}

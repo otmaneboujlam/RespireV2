@@ -83,6 +83,10 @@ export class AbsenceManagementPage {
         this.selectedValuePut = this.absenceType[0];
       },
       error: err => {
+        this.absenceService.getAbsences();
+        this.getAbsencePut = this.absencePutInitialValue;
+        this.absenceToUpdate = this.absencePutInitialValue;
+        this.selectedValuePut = this.absenceType[0];
         this.isError = true;
         this.errorMsg$ = err.error.message;
         setTimeout(()=> {
@@ -96,11 +100,12 @@ export class AbsenceManagementPage {
     this.absenceService.deleteAbsence(this.absenceToDelete.id).subscribe({
       next: () => {
         this.absenceService.getAbsences(),
-        this.absenceToDelete = this.absenceInfoInitialValue,
+        this.absenceToDelete = this.absenceInfoInitialValue;
         this.absenceService.getAbsenceScore().subscribe({
         next: value => {this.absenceScore$ = value}
       })},
       error: err => {
+        this.absenceToDelete = this.absenceInfoInitialValue;
         this.isError = true;
         this.errorMsg$ = err.error.message;
         setTimeout(()=> {
@@ -122,6 +127,8 @@ export class AbsenceManagementPage {
         this.selectedValue = this.absenceType[0];
       },
       error: err => {
+        this.getAbsencePost = this.absencePostInitialValue;
+        this.selectedValue = this.absenceType[0];
         this.isError = true;
         this.errorMsg$ = err.error.message;
         setTimeout(()=> {
