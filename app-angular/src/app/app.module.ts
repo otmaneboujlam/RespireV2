@@ -14,6 +14,7 @@ import { AbsenceProcessModule } from './pages/absence-process/absence-process.mo
 import { SyntheticViewModule } from './pages/synthetic-view/synthetic-view.module';
 import { PublicHolidayModule } from './pages/public-holiday/public-holiday.module';
 import { ProfileModule } from './pages/profile/profile.module';
+import { HolidayManagmentModule } from './pages/holiday-managment/holiday-managment.module';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { ProfileModule } from './pages/profile/profile.module';
     AbsenceProcessModule,
     SyntheticViewModule,
     PublicHolidayModule,
-    ProfileModule
+    ProfileModule,
+    HolidayManagmentModule
   ],
   providers: [],
   bootstrap: [AppComponent]

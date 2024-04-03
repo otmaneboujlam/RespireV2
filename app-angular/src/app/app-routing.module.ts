@@ -9,6 +9,7 @@ import { PlanningPage } from './pages/planning/planning.page';
 import { AbsenceProcessPage } from './pages/absence-process/absence-process.page';
 import { SyntheticViewPage } from './pages/synthetic-view/synthetic-view.page';
 import { ProfilePage } from './pages/profile/profile.page';
+import { HolidayManagmentPage } from './pages/holiday-managment/holiday-managment.page';
 
 const routes: Routes = [
   { path: 'signin', component: SigninPage},
@@ -22,6 +23,7 @@ const routes: Routes = [
       { path: 'absenceprocess', component: AbsenceProcessPage},
       { path: 'syntheticview', component: SyntheticViewPage},
       { path: 'publicholiday', component: PublicHolidayPage},
+      { path: 'publicholidaymanagment', component: HolidayManagmentPage},
       { path: 'profile', component: ProfilePage},
       { path: '', pathMatch: 'full', redirectTo: '/welcome'},
       { path: '**', component: WelcomePage},
