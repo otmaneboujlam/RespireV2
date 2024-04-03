@@ -21,7 +21,7 @@
           <td>{{absence.startDate}}</td>
           <td>{{absence.endDate}}</td>
           <td>{{absence.reason}}</td>
-          <td>
+          <td *ngIf="absence.id">
             <ul class="p-0 m-0 text-center">
               <li class="d-inline-block mx-1">
                 <button

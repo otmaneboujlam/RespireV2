@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.diginamic.apijava.dto.AbsenceDto;
 import com.diginamic.apijava.dto.AbsencePostDto;
+import com.diginamic.apijava.dto.AbsencePutDto;
 import com.diginamic.apijava.dto.AbsenceStatusUpdateDto;
 import com.diginamic.apijava.entity.Absence;
 import com.diginamic.apijava.entity.Account;
@@ -268,6 +269,66 @@ public class AbsenceService {
 		if(updatedAbsenceStatus.getAbsenceStatus().equals(AbsenceStatus.REJETEE.toString())) {
 			absence.setAbsenceStatus(AbsenceStatus.REJETEE);
 		}
+		
+		return absenceDtoMapper.toDto(absenceRepository.save(absence));
+	}
+	
+	public AbsenceDto update(@Valid AbsencePutDto absenceToUpdate, String email) {
+		Optional<Account> currentUserOpt = accountRepository.findFirstByEmail(email);
+		if(currentUserOpt.isEmpty()) {
+			throw new EntityNotFoundException("Current user not found");
+		}
+		Optional<Absence> absenceOpt = absenceRepository.findById(absenceToUpdate.getId());
+		if(absenceOpt.isEmpty()) {
+			throw new EntityNotFoundException("Entity not found");
+		}
+		if(absenceOpt.get().getAbsenceStatus() == AbsenceStatus.EN_ATTENTE_VALIDATION || absenceOpt.get().getAbsenceStatus() == AbsenceStatus.VALIDEE) {
+			throw new EntityAccessDeniedException("You do not have the right to update this absence");
+		}
+		try {
+			LocalDate.parse(absenceToUpdate.getStartDate());
+		} catch (Exception e) {
+			throw new DateParseException(absenceToUpdate.getStartDate()+" could not be parsed");
+		}
+		try {
+			LocalDate.parse(absenceToUpdate.getEndDate());
+		} catch (Exception e) {
+			throw new DateParseException(absenceToUpdate.getEndDate()+" could not be parsed");
+		}
+		try {
+			AbsenceType.valueOf(absenceToUpdate.getAbsenceType());
+		} catch (Exception e) {
+			throw new IllegalAbsenceTypeException(absenceToUpdate.getAbsenceType()+" does not correspond to a type of absence");
+		}
+		if(absenceToUpdate.getAbsenceType().equals(AbsenceType.CONGE_SANS_SOLDE.toString())) {
+			if(absenceToUpdate.getReason().isBlank()) {
+				throw new AbsenceReasonException("The reason is mandatory if the type of absence is Unpaid");
+			}
+		}
+		if(LocalDate.parse(absenceToUpdate.getStartDate()).isBefore(LocalDate.now())) {
+			throw new AbsenceStartEndDateException("The start date cannot be in the past");
+		}
+		if(absenceToUpdate.getAbsenceType().equals(AbsenceType.RTT_EMPLOYEE.toString())) {
+			if(!LocalDate.parse(absenceToUpdate.getStartDate()).isEqual(LocalDate.parse(absenceToUpdate.getEndDate()))) {
+				throw new AbsenceStartEndDateException("The start date must be equal to the end date if the type of absence is RTT employee");
+			}
+		}
+		if(LocalDate.parse(absenceToUpdate.getStartDate()).isAfter(LocalDate.parse(absenceToUpdate.getEndDate()))) {
+			throw new AbsenceStartEndDateException("The end date must be greater than or equal to the start date");
+		}
+		if(LocalDate.parse(absenceToUpdate.getStartDate()).getYear() != LocalDate.parse(absenceToUpdate.getEndDate()).getYear()) {
+			throw new AbsenceStartEndDateException("Start date and end date must be in the same year");
+		}
+		if(LocalDate.parse(absenceToUpdate.getStartDate()).getYear() != LocalDate.now().getYear() || LocalDate.parse(absenceToUpdate.getEndDate()).getYear() != LocalDate.now().getYear()) {
+			throw new AbsenceStartEndDateException("The absence request must be in the current year");
+		}
+		
+		Absence absence = absenceOpt.get();		
+		absence.setStartDate(LocalDate.parse(absenceToUpdate.getStartDate()));
+		absence.setEndDate(LocalDate.parse(absenceToUpdate.getEndDate()));
+		absence.setAbsenceStatus(AbsenceStatus.INITIALE);
+		absence.setAbsenceType(AbsenceType.valueOf(absenceToUpdate.getAbsenceType()));
+		absence.setReason(absenceToUpdate.getReason());
 		
 		return absenceDtoMapper.toDto(absenceRepository.save(absence));
 	}

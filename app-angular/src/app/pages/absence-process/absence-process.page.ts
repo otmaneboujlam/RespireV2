@@ -12,7 +12,6 @@ import { AbsenceProcessInfoService } from '../../providers/absence-process-info.
 })
 export class AbsenceProcessPage {
 
-  isAbsencesInfoOk : boolean = false;
   absencesInfo$! : [AbsenceInfo];
   absenceInfoInitialValue : AbsenceInfo= {
     "id": "0",

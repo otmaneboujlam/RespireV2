@@ -7,6 +7,7 @@ import { AbsenceProcessInfoService } from './absence-process-info.service';
 import { AbsenceUpdateStatus } from '../models/absence-update-status';
 import { AbsenceScore } from '../models/absence-score';
 import { AbsenceOrganizationInfo } from '../models/absence-organization-info';
+import { AbsencePut } from '../models/absence-put';
 
 @Injectable({
   providedIn: 'root'
@@ -79,6 +80,15 @@ export class AbsenceService {
 
   putAbsenceProcess = (absence : AbsenceUpdateStatus)=> {
     return this.http.put<any>("http://localhost:8082/api/absence/process", absence,{
+      headers: new HttpHeaders({
+      "Content-Type": "application/json"
+      }),
+      withCredentials : true
+    })
+  }
+
+  putAbsence = (absence : AbsencePut)=> {
+    return this.http.put<any>("http://localhost:8082/api/absence", absence,{
       headers: new HttpHeaders({
       "Content-Type": "application/json"
       }),

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.diginamic.apijava.dto.AbsenceDto;
 import com.diginamic.apijava.dto.AbsencePostDto;
+import com.diginamic.apijava.dto.AbsencePutDto;
 import com.diginamic.apijava.dto.AbsenceStatusUpdateDto;
 import com.diginamic.apijava.service.AbsenceService;
 
@@ -76,5 +77,11 @@ public class AbsenceController {
 	@PutMapping("/process")
 	public AbsenceDto updateAbsenceStatus(@RequestBody @Valid AbsenceStatusUpdateDto updatedAbsenceStatus) {
 		return absenceService.updateStatus(updatedAbsenceStatus, SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+	}
+	
+	@Secured({"ROLE_ADMIN", "ROLE_MANAGER", "ROLE_USER"})
+	@PutMapping
+	public AbsenceDto updateAbsence(@RequestBody @Valid AbsencePutDto updatedAbsence) {
+		return absenceService.update(updatedAbsence, SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
 	}
 }

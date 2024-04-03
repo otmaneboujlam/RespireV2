@@ -138,6 +138,9 @@ public class AbsenceOrganizationService {
 		if(absenceOrganizationOpt.isEmpty()) {
 			throw new EntityNotFoundException("Entity not found");
 		}
+		if(absenceOrganizationOpt.get().getAbsenceOrganizationStatus() == AbsenceOrganizationStatus.VALIDEE && absenceOrganizationOpt.get().getDate().isBefore(LocalDate.now())) {
+			throw new AbsenceStartEndDateException("It is not possible to delete a public holiday or an employer RTT validated in the past");
+		}
 		absenceOrganizationRepository.deleteById(id);
 	}
 	

@@ -96,7 +96,7 @@ export class HolidayManagmentPage {
   ngOnInit(): void {
     this.absenceOrganiztionService.getAbsencesOrganizationAll().subscribe({
       next: value => this.absencesOrganizationInfo$ = value,
-      error: err => console.log(err.error.message)
+      error: err => console.log(err)
     })
   }
 }
