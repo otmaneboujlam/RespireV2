@@ -138,9 +138,10 @@
           #dateCtrl="ngModel"
           [(ngModel)]="getAbsencePost.date"
           type="date"
+          [min]="dateNow"
+          [max]="dateMax"
           class="form-control form-control-lg border-3 p-10 rounded-3"
           id="date"
-          pattern="^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$"
           autocomplete="on"
         />
         <p
@@ -224,9 +225,10 @@
           #dateCtrl="ngModel"
           [(ngModel)]="getAbsencePut.date"
           type="date"
+          [min]="dateNow"
+          [max]="dateMax"
           class="form-control form-control-lg border-3 p-10 rounded-3"
           id="date"
-          pattern="^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$"
           autocomplete="on"
         />
         <p

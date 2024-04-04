@@ -1,6 +1,12 @@
 <div class="text-center">
-  <h1>Page de connexion</h1>
-  <img class="mb-4" src="assets\favicon.png" alt="cloud" width="72" height="72">
+  <h1>Connexion</h1>
+  <img
+    class="mb-4"
+    src="assets\favicon.png"
+    alt="cloud"
+    width="72"
+    height="72"
+  />
   <form #formCtrl="ngForm" class="form-signin">
     <div class="form-group p-10">
       <label for="email" class="d-none">Email</label>
@@ -34,7 +40,7 @@
       (click)="submit()"
       class="btn btn-lg btn-primary btn-block border-3 p-10 m-2 rounded-3"
     >
-    Se connecter
+      Se connecter
     </button>
   </form>
   <p *ngIf="isError" role="alert" class="alert alert-danger m-3">

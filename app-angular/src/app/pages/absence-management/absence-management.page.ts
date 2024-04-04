@@ -16,6 +16,7 @@ export class AbsenceManagementPage {
 
   absenceScore$! : AbsenceScore
   dateNow = new Date().toJSON().slice(0, 10);
+  dateMax = this.dateNow.slice(0,4)+"-12-31"
   absencesInfo$! : [AbsenceInfo];
   absencePostInitialValue : AbsencePost = {
     "startDate": "",
