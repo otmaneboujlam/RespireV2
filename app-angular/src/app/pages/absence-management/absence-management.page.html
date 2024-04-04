@@ -172,9 +172,16 @@
           type="text"
           class="form-control form-control-lg border-3 p-10 rounded-3"
           id="startDate"
+          pattern="^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$"
           autocomplete="on"
           placeholder="Date de début : yyyy-mm-dd"
         />
+        <p
+          class="m-0 p-1 text-danger"
+          *ngIf="startDateCtrl.dirty && startDateCtrl.invalid"
+        >
+          Format de date invalide
+        </p>
       </div>
       <div
         *ngIf="!type.value.toString().startsWith('1')"
@@ -188,9 +195,16 @@
           type="text"
           class="form-control form-control-lg border-3 p-10 rounded-3"
           id="endDate"
+          pattern="^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$"
           autocomplete="on"
           placeholder="Date de fin : yyyy-mm-dd"
         />
+        <p
+          class="m-0 p-1 text-danger"
+          *ngIf="endDateCtrl.dirty && endDateCtrl.invalid"
+        >
+          Format de date invalide
+        </p>
       </div>
       <div
         *ngIf="type.value.toString().startsWith('2')"
@@ -258,9 +272,16 @@
           type="text"
           class="form-control form-control-lg border-3 p-10 rounded-3"
           id="startDate"
+          pattern="^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$"
           autocomplete="on"
           placeholder="Date de début : yyyy-mm-dd"
         />
+        <p
+          class="m-0 p-1 text-danger"
+          *ngIf="startDateCtrl.dirty && startDateCtrl.invalid"
+        >
+          Format de date invalide
+        </p>
       </div>
       <div
         *ngIf="!type.value.toString().startsWith('1')"
@@ -274,9 +295,16 @@
           type="text"
           class="form-control form-control-lg border-3 p-10 rounded-3"
           id="endDate"
+          pattern="^\d{4}\-(0[1-9]|1[012])\-(0[1-9]|[12][0-9]|3[01])$"
           autocomplete="on"
           placeholder="Date de fin : yyyy-mm-dd"
         />
+        <p
+          class="m-0 p-1 text-danger"
+          *ngIf="endDateCtrl.dirty && endDateCtrl.invalid"
+        >
+          Format de date invalide
+        </p>
       </div>
       <div
         *ngIf="type.value.toString().startsWith('2')"

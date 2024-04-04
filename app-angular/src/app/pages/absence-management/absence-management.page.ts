@@ -139,7 +139,11 @@ export class AbsenceManagementPage {
   }
 
   openModalUpdate(content: TemplateRef<any>, absence : AbsenceInfo) {
-    this.getAbsencePut = absence;
+    this.getAbsencePut.id = absence.id;
+    this.getAbsencePut.startDate = absence.startDate;
+    this.getAbsencePut.endDate = absence.endDate;
+    this.getAbsencePut.absenceType = absence.absenceType;
+    this.getAbsencePut.reason = absence.reason;
     if(absence.absenceType === "CONGE_PAYE") {
       this.selectedValuePut = this.absenceType[0];
     }
