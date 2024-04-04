@@ -13,12 +13,13 @@ export class HeaderComponent {
   isMenuCollapsed = true;
 
   firstName$! : String;
+  roles$! : String[];
 
   constructor(private accountService : AccountService, private accountInfoService : AccountInfoService){}
 
   ngOnInit(): void {
     this.accountInfoService.abonner().subscribe({
-      next: (value: AccountInfo) => this.firstName$ = value.firstName
+      next: (value: AccountInfo) => {this.firstName$ = value.firstName; this.roles$ = value.roles}
     })
     this.accountService.getCurrentUser()
   }
