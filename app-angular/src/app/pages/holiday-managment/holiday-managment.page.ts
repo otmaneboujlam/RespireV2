@@ -178,6 +178,26 @@ export class HolidayManagmentPage {
 		this.modalService.open(content, { centered: true });
 	}
 
+  isSortedUp : boolean = true;
+
+  sort() {
+    if(this.isSortedUp) {
+      this.absencesOrganizationInfo$.sort(
+        (a, b) : number => {
+          return Date.parse(a.date.slice(0, 10)) - Date.parse(b.date.slice(0, 10))
+        }
+      )
+    }
+    else {
+      this.absencesOrganizationInfo$.sort(
+        (b, a) : number => {
+          return Date.parse(a.date.slice(0, 10)) - Date.parse(b.date.slice(0, 10))
+        }
+      )
+    }
+    this.isSortedUp = !this.isSortedUp;
+  }
+
   ngOnInit(): void {
     this.absenceOrganiztionService.getAbsencesOrganizationAll().subscribe({
       next: value => this.absencesOrganizationInfo$ = value.sort(

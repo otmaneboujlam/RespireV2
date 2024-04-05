@@ -53,6 +53,26 @@ export class AbsenceProcessPage {
     this.absenceToReject = absence;
 	}
 
+  isSortedUp : boolean = true;
+
+  sort() {
+    if(this.isSortedUp) {
+      this.absencesInfo$.sort(
+        (a, b) : number => {
+          return Date.parse(a.startDate.slice(0, 10)) - Date.parse(b.startDate.slice(0, 10))
+        }
+      )
+    }
+    else {
+      this.absencesInfo$.sort(
+        (b, a) : number => {
+          return Date.parse(a.startDate.slice(0, 10)) - Date.parse(b.startDate.slice(0, 10))
+        }
+      )
+    }
+    this.isSortedUp = !this.isSortedUp;
+  }
+
   ngOnInit(): void {
     this.absenceProcessInfoService.abonner().subscribe({
       next: (value: [AbsenceInfo]) => {this.absencesInfo$ = value}
