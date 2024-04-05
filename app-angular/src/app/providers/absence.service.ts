@@ -42,7 +42,11 @@ export class AbsenceService {
       withCredentials : true
     }).subscribe(
       {
-        next: absencesInfo => this.absenceInfoService.publier(absencesInfo)
+        next: absencesInfo => this.absenceInfoService.publier(absencesInfo.sort(
+          (a, b) : number => {
+            return Date.parse(b.startDate.slice(0, 10)) - Date.parse(a.startDate.slice(0, 10))
+          }
+          ))
       }
     );
   }
@@ -73,7 +77,11 @@ export class AbsenceService {
       withCredentials : true
     }).subscribe(
       {
-        next: absencesInfo => this.absenceProcessInfoService.publier(absencesInfo)
+        next: absencesInfo => this.absenceProcessInfoService.publier(absencesInfo.sort(
+          (a, b) : number => {
+            return Date.parse(b.startDate.slice(0, 10)) - Date.parse(a.startDate.slice(0, 10))
+          }
+          ))
       }
     );
   }

@@ -18,7 +18,11 @@ export class PublicHolidayPage {
 
   ngOnInit(): void {
     this.absenceService.getAbsencesOrganization().subscribe({
-      next: (values: [AbsenceOrganizationInfo]) => { this.absencesOrganizationInfo$ = values.filter(v => v.date.slice(0, 4) === this.dateNow && v.absenceStatus === "VALIDEE")}
+      next: (values: [AbsenceOrganizationInfo]) => { this.absencesOrganizationInfo$ = values.filter(v => v.date.slice(0, 4) === this.dateNow && v.absenceStatus === "VALIDEE").sort(
+        (a, b) : number => {
+          return Date.parse(b.date.slice(0, 10)) - Date.parse(a.date.slice(0, 10))
+        }
+        )}
     })
   }
 }

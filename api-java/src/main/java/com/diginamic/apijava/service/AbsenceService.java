@@ -92,7 +92,7 @@ public class AbsenceService {
 		List<AbsenceDto> absencesGroupFilterStatus = new ArrayList<AbsenceDto>();
 		for (Account account : accounts) {
 			for (Absence absence : account.getAbsences()) {
-				if(status.equals(absence.getAbsenceStatus().toString())) {
+				if( absence.getStartDate().getYear() == LocalDate.now().getYear() && status.equals(absence.getAbsenceStatus().toString())) {
 					absencesGroupFilterStatus.add(absenceDtoMapper.toDto(absence));
 				}
 			}

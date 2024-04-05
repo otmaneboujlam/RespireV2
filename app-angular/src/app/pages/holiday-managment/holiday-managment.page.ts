@@ -75,7 +75,11 @@ export class HolidayManagmentPage {
     this.absenceOrganiztionService.putAbsenceOrganization(this.getAbsencePut).subscribe({
       next: () => {
         this.absenceOrganiztionService.getAbsencesOrganizationAll().subscribe({
-          next: value => this.absencesOrganizationInfo$ = value,
+          next: value => this.absencesOrganizationInfo$ = value.sort(
+            (a, b) : number => {
+              return Date.parse(b.date.slice(0, 10)) - Date.parse(a.date.slice(0, 10))
+            }
+            ),
           error: err => console.log(err)
         });
         this.getAbsencePut = this.absencePutInitialValue;
@@ -118,7 +122,11 @@ export class HolidayManagmentPage {
     this.absenceOrganiztionService.postAbsenceOrganization(this.getAbsencePost).subscribe({
       next: absence => {
         this.absenceOrganiztionService.getAbsencesOrganizationAll().subscribe({
-          next: value => this.absencesOrganizationInfo$ = value,
+          next: value => this.absencesOrganizationInfo$ = value.sort(
+            (a, b) : number => {
+              return Date.parse(b.date.slice(0, 10)) - Date.parse(a.date.slice(0, 10))
+            }
+            ),
           error: err => console.log(err.error.message)
         });
         this.getAbsencePost = this.absencePostInitialValue;
@@ -172,7 +180,11 @@ export class HolidayManagmentPage {
 
   ngOnInit(): void {
     this.absenceOrganiztionService.getAbsencesOrganizationAll().subscribe({
-      next: value => this.absencesOrganizationInfo$ = value,
+      next: value => this.absencesOrganizationInfo$ = value.sort(
+        (a, b) : number => {
+          return Date.parse(b.date.slice(0, 10)) - Date.parse(a.date.slice(0, 10))
+        }
+        ),
       error: err => console.log(err)
     })
 
