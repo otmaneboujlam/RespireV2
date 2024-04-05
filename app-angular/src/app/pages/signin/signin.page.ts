@@ -5,6 +5,7 @@ import { AccountSignin } from '../../models/account-signin';
 import { IsLoggedInService } from '../../providers/is-logged-in.service';
 import { AccountInfoService } from '../../providers/account-info.service';
 import { AccountInfo } from '../../models/account-info';
+import * as crypto from 'crypto-js';
 
 @Component({
   selector: 'app-signin',
@@ -39,7 +40,7 @@ export class SigninPage {
       }
     });
     this.accountInfoService.abonner().subscribe({
-      next: (value: AccountInfo) => localStorage.setItem("TOKEN", "["+value.roles+"]")
+      next: (value: AccountInfo) => localStorage.setItem("TOKEN", crypto.AES.encrypt("["+value.roles+"]", "secret").toString())
     })
   }
 
