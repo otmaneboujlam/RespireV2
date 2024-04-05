@@ -27,7 +27,7 @@ export class SigninPage {
   submit(){
     this.accountService.signin(this.getCompte).subscribe({
       next: compte => {
-        localStorage.setItem("TOKEN", "true");
+        sessionStorage.setItem("TOKEN", "true");
         this.isLoggedIn.publier(true);
         this.router.navigateByUrl("/welcome")
       },
@@ -40,7 +40,7 @@ export class SigninPage {
       }
     });
     this.accountInfoService.abonner().subscribe({
-      next: (value: AccountInfo) => localStorage.setItem("TOKEN", crypto.AES.encrypt("["+value.roles+"]", "secret").toString())
+      next: (value: AccountInfo) => sessionStorage.setItem("TOKEN", crypto.AES.encrypt("["+value.roles+"]", "secret").toString())
     })
   }
 

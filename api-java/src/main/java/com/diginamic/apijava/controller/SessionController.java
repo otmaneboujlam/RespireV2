@@ -59,7 +59,7 @@ public class SessionController {
 		
 		ResponseCookie tokenCookie = ResponseCookie.from(jwtConfig.getCookie(), jetonJWT)
 				.httpOnly(true)
-				.maxAge(jwtConfig.getExpireIn() * 1000)
+				.maxAge(jwtConfig.getExpireIn() * -1000)
 				.path("/")
 				.build();
 		

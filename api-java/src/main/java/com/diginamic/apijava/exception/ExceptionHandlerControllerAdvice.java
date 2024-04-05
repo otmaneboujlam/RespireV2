@@ -122,5 +122,16 @@ public class ExceptionHandlerControllerAdvice {
 				request.getDescription(false)
 				);
 	}
+	
+	@ExceptionHandler(JsonWebTokenException.class)
+	@ResponseStatus(code = HttpStatus.UNAUTHORIZED)
+	public ErrorDto handleExceptionJsonWebToken(Exception exception, WebRequest request) {
+		//exception.printStackTrace();
+		return new ErrorDto(
+				HttpStatus.UNAUTHORIZED.value(), 
+				exception.getMessage(), 
+				request.getDescription(false)
+				);
+	}
 		
 }

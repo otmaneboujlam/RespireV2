@@ -10,7 +10,7 @@ UrlTree> | boolean | UrlTree => {
 
   const router = inject(Router);
   const accountInfoService = inject(AccountInfoService);
-  const roles : any = crypto.AES.decrypt(localStorage.getItem("TOKEN")!, "secret").toString(crypto.enc.Utf8);
+  const roles : any = crypto.AES.decrypt(sessionStorage.getItem("TOKEN")!, "secret").toString(crypto.enc.Utf8);
 
   if(roles != null && roles.includes(route.data['role'])){
     return true;

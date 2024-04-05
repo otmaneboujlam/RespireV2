@@ -11,6 +11,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import com.diginamic.apijava.exception.JsonWebTokenException;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.FilterChain;
@@ -36,25 +39,29 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 				.filter(cookie -> cookie.getName().equals(jwtConfig.getCookie()))
 				.map(Cookie::getValue)
 				.forEach(token -> {
-					Claims body = Jwts
-							.parserBuilder()
-							.setSigningKey(jwtConfig.getSecretKey())
-							.build()
-							.parseClaimsJws(token)
-							.getBody();
-					
-					String username = body.getSubject();
-					
-					List<String> roles = body.get("roles", List.class);
-					
-					List<SimpleGrantedAuthority> authorities = roles
-							.stream()
-							.map(SimpleGrantedAuthority::new)
-							.collect(Collectors.toList());
-					
-					Authentication authentication = new UsernamePasswordAuthenticationToken(username, null, authorities);
-					
-					SecurityContextHolder.getContext().setAuthentication(authentication);
+					try {
+						Claims body = Jwts
+								.parserBuilder()
+								.setSigningKey(jwtConfig.getSecretKey())
+								.build()
+								.parseClaimsJws(token)
+								.getBody();
+						
+						String username = body.getSubject();
+						
+						List<String> roles = body.get("roles", List.class);
+						
+						List<SimpleGrantedAuthority> authorities = roles
+								.stream()
+								.map(SimpleGrantedAuthority::new)
+								.collect(Collectors.toList());
+						
+						Authentication authentication = new UsernamePasswordAuthenticationToken(username, null, authorities);
+						
+						SecurityContextHolder.getContext().setAuthentication(authentication);
+					} catch (Exception e) {
+						throw new JsonWebTokenException(e.getMessage());
+					}
 				});
 		}
 		

@@ -9,7 +9,7 @@ UrlTree> | boolean | UrlTree => {
   const router = inject(Router);
   const isLoggedIn = inject(IsLoggedInService);
 
-  if(localStorage.getItem("TOKEN")){
+  if(sessionStorage.getItem("TOKEN")){
     isLoggedIn.publier(true);
     return true;
   }

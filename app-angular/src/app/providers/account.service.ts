@@ -31,7 +31,7 @@ export class AccountService {
     }).subscribe(
       {
         next: () => {
-          localStorage.removeItem("TOKEN");
+          sessionStorage.removeItem("TOKEN");
           this.isLoggedIn.publier(false);
           this.router.navigateByUrl("/signin")
         },
