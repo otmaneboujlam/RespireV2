@@ -1,5 +1,10 @@
 <div class="container">
   <h1>Validation des demandes d'absences</h1>
+  <pagination-controls
+    class="text-center"
+    id="listAbsenceProcess"
+    (pageChange)="p = $event"
+  ></pagination-controls>
   <div class="table-responsive">
     <table class="table table-hover table-dark">
       <thead>
@@ -14,7 +19,9 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let absence of absencesInfo$">
+        <tr
+          *ngFor="let absence of absencesInfo$ | paginate: { id: 'listAbsenceProcess', itemsPerPage: 8, currentPage: p }"
+        >
           <th scope="row">{{absencesInfo$.indexOf(absence)+1}}</th>
           <td>{{absence.absenceType}}</td>
           <td>{{absence.account}}</td>

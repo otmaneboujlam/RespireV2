@@ -14,6 +14,7 @@ import { AbsencePut } from '../../models/absence-put';
 })
 export class AbsenceManagementPage {
 
+  p: number = 1;
   absenceScore$! : AbsenceScore
   dateNow = new Date().toJSON().slice(0, 10);
   dateMax = this.dateNow.slice(0,4)+"-12-31"

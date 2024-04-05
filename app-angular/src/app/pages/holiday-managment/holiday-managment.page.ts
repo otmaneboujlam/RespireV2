@@ -14,6 +14,7 @@ import { OrganizationInfo } from '../../models/organization-info';
 })
 export class HolidayManagmentPage {
 
+  p: number = 1;
   dateNow = new Date().toJSON().slice(0, 10);
   dateMax = this.dateNow.slice(0,4)+"-12-31"
   absencesOrganizationInfo$! : [AbsenceOrganizationInfo];

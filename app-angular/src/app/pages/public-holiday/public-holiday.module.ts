@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PublicHolidayPage } from './public-holiday.page';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 
@@ -9,7 +10,8 @@ import { PublicHolidayPage } from './public-holiday.page';
     PublicHolidayPage
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    NgxPaginationModule
   ],
   exports: [
     PublicHolidayPage

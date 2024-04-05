@@ -6,6 +6,11 @@
   >
     Ajouter une absence
   </button>
+  <pagination-controls
+    class="d-inline-block"
+    id="listAbsenceOrganizationEdit"
+    (pageChange)="p = $event"
+  ></pagination-controls>
   <div *ngIf="isError" class="alert alert-danger" role="alert">
     {{errorMsg$}}
   </div>
@@ -23,7 +28,9 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let absence of absencesOrganizationInfo$">
+        <tr
+          *ngFor="let absence of absencesOrganizationInfo$ | paginate: { id: 'listAbsenceOrganizationEdit', itemsPerPage: 8, currentPage: p }"
+        >
           <th scope="row">{{absencesOrganizationInfo$.indexOf(absence)+1}}</th>
           <td>{{absence.absenceType}}</td>
           <td>{{absence.absenceStatus}}</td>

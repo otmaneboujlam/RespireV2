@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AbsenceProcessPage } from './absence-process.page';
-
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 @NgModule({
@@ -9,7 +9,8 @@ import { AbsenceProcessPage } from './absence-process.page';
     AbsenceProcessPage
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    NgxPaginationModule
   ],
   exports: [
     AbsenceProcessPage

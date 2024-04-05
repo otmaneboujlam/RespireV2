@@ -14,6 +14,8 @@ export class PublicHolidayPage {
 
   constructor(private absenceService : AbsenceService){}
 
+  p: number = 1;
+
   ngOnInit(): void {
     this.absenceService.getAbsencesOrganization().subscribe({
       next: (values: [AbsenceOrganizationInfo]) => { this.absencesOrganizationInfo$ = values.filter(v => v.date.slice(0, 4) === this.dateNow && v.absenceStatus === "VALIDEE")}

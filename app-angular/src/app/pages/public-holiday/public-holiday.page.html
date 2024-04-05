@@ -1,5 +1,10 @@
 <div class="container">
   <h1>Liste des jours fériés et RTT employeurs - {{dateNow}}</h1>
+  <pagination-controls
+    class="text-center"
+    id="listPublicHoliday"
+    (pageChange)="p = $event"
+  ></pagination-controls>
   <div class="table-responsive">
     <table class="table table-hover table-dark">
       <thead>
@@ -11,7 +16,9 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let absence of absencesOrganizationInfo$">
+        <tr
+          *ngFor="let absence of absencesOrganizationInfo$ | paginate: { id: 'listPublicHoliday', itemsPerPage: 10, currentPage: p }"
+        >
           <th scope="row">{{absencesOrganizationInfo$.indexOf(absence)+1}}</th>
           <td>{{absence.absenceType}}</td>
           <td>{{absence.date}}</td>
