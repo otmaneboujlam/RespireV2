@@ -86,7 +86,7 @@
         <a
           *ngIf="roles$.includes('ROLE_USER') && firstName$.length != 0"
           routerLink="/profile"
-          class="d-inline nav-link mx-1"
+          class="d-inline nav-link mx-2"
           (click)="isMenuCollapsed = true"
         >
           <button type="button" class="rounded-circle btn btn-danger">
@@ -94,7 +94,7 @@
           </button>
         </a>
 
-        <button (click)="submit()" type="button" class="btn btn-warning mx-1">
+        <button (click)="submit()" type="button" class="btn btn-warning mx-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             height="1em"

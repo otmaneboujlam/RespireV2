@@ -4,6 +4,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AbsenceOrganizationPost } from '../../models/absence-organization-post';
 import { AbsenceOrganizationService } from '../../providers/absence-organization.service';
 import { AbsenceOrganizationPut } from '../../models/absence-organization-put';
+import { OrganizationService } from '../../providers/organization.service';
+import { OrganizationInfo } from '../../models/organization-info';
 
 @Component({
   selector: 'app-holiday-managment',
@@ -53,18 +55,22 @@ export class HolidayManagmentPage {
     {id: 1, name: "JOUR_FERIE"},
     {id: 2, name: "RTT_EMPLOYEUR"}
   ];
+  organizations$! : OrganizationInfo[];
   selectedValue = this.absenceType[0];
   selectedValuePut = this.absenceType[0];
+  selectedValueOrganization$! : OrganizationInfo;
+  selectedValueOrganizationPut$! : OrganizationInfo;
   absenceToDelete: AbsenceOrganizationInfo = this.absenceInfoInitialValue;
   absenceToUpdate: AbsenceOrganizationPut = this.absencePutInitialValue;
   isError : boolean = false;
   errorMsg$! : String;
 
-  constructor(private modalService: NgbModal, private absenceOrganiztionService : AbsenceOrganizationService){}
+  constructor(private modalService: NgbModal, private absenceOrganiztionService : AbsenceOrganizationService, private organizationService : OrganizationService){}
 
   handlePut() {
     this.getAbsencePut.id = this.absenceToUpdate.id;
     this.getAbsencePut.absenceOrganizationType = this.selectedValuePut.name;
+    this.getAbsencePut.organization = this.selectedValueOrganizationPut$.name;
     this.absenceOrganiztionService.putAbsenceOrganization(this.getAbsencePut).subscribe({
       next: () => {
         this.absenceOrganiztionService.getAbsencesOrganizationAll().subscribe({
@@ -74,6 +80,7 @@ export class HolidayManagmentPage {
         this.getAbsencePut = this.absencePutInitialValue;
         this.absenceToUpdate = this.absencePutInitialValue;
         this.selectedValuePut = this.absenceType[0];
+        this.selectedValueOrganizationPut$ = this.organizations$[0];
       },
       error: err => {
         this.isError = true;
@@ -106,6 +113,7 @@ export class HolidayManagmentPage {
 
   handlePost() {
     this.getAbsencePost.absenceOrganizationType = this.selectedValue.name;
+    this.getAbsencePost.organization = this.selectedValueOrganization$.name;
     this.absenceOrganiztionService.postAbsenceOrganization(this.getAbsencePost).subscribe({
       next: absence => {
         this.absenceOrganiztionService.getAbsencesOrganizationAll().subscribe({
@@ -114,6 +122,7 @@ export class HolidayManagmentPage {
         });
         this.getAbsencePost = this.absencePostInitialValue;
         this.selectedValue = this.absenceType[0];
+        this.selectedValueOrganization$ = this.organizations$[0];
       },
       error: err => {
         this.isError = true;
@@ -137,6 +146,12 @@ export class HolidayManagmentPage {
     else {
       this.selectedValuePut = this.absenceType[1];
     }
+    for(let orga of this.organizations$) {
+      if(absence.organization === orga.name){
+        this.selectedValueOrganizationPut$ = orga;
+        break;
+      }
+    }
 		this.modalService.open(content, { centered: true });
     this.absenceToUpdate.id = absence.id
     this.absenceToUpdate.date = absence.date
@@ -158,6 +173,16 @@ export class HolidayManagmentPage {
     this.absenceOrganiztionService.getAbsencesOrganizationAll().subscribe({
       next: value => this.absencesOrganizationInfo$ = value,
       error: err => console.log(err)
+    })
+
+    this.organizationService.getOrganizations().subscribe({
+      next: value => {
+        this.organizations$ = value;
+        if(value.length){
+          this.selectedValueOrganization$ = value[0];
+          this.selectedValueOrganizationPut$ = value[0];
+        }
+      }
     })
   }
 }

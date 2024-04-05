@@ -9,13 +9,9 @@ UrlTree> | boolean | UrlTree => {
 
   const router = inject(Router);
   const accountInfoService = inject(AccountInfoService);
-  let roles : String[] = [];
+  const roles : any = localStorage.getItem("TOKEN");
 
-  accountInfoService.abonner().subscribe({
-    next: (value: AccountInfo) => roles = value.roles
-  })
-
-  if(roles.includes(route.data['role'])){
+  if(roles != null && roles.includes(route.data['role'])){
     return true;
   }
   else {

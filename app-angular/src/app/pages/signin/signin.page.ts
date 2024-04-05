@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { AccountService } from '../../providers/account.service';
 import { AccountSignin } from '../../models/account-signin';
 import { IsLoggedInService } from '../../providers/is-logged-in.service';
+import { AccountInfoService } from '../../providers/account-info.service';
+import { AccountInfo } from '../../models/account-info';
 
 @Component({
   selector: 'app-signin',
@@ -11,7 +13,7 @@ import { IsLoggedInService } from '../../providers/is-logged-in.service';
 })
 export class SigninPage {
 
-  constructor(private router: Router, private accountService : AccountService, private isLoggedIn : IsLoggedInService){}
+  constructor(private router: Router, private accountService : AccountService, private isLoggedIn : IsLoggedInService, private accountInfoService : AccountInfoService){}
 
   isError : boolean = false;
   errorMsg$! : String;
@@ -36,6 +38,9 @@ export class SigninPage {
         },2000);
       }
     });
+    this.accountInfoService.abonner().subscribe({
+      next: (value: AccountInfo) => localStorage.setItem("TOKEN", "["+value.roles+"]")
+    })
   }
 
 }

@@ -118,6 +118,21 @@
     <div class="modal-body bg-dark text-white">
       <div class="form-group my-1">
         <select
+          #orga
+          name="orga"
+          id="orga"
+          class="form-select form-select-lg border-3 p-10 rounded-3"
+          required
+          [(ngModel)]="selectedValueOrganization$"
+          [ngModelOptions]="{standalone: true}"
+        >
+          <option *ngFor="let o of organizations$" [ngValue]="o">
+            {{o.name}}
+          </option>
+        </select>
+      </div>
+      <div class="form-group my-1">
+        <select
           #type
           name="type"
           id="type"
@@ -150,19 +165,6 @@
         >
           Format de date invalide
         </p>
-      </div>
-      <div class="form-group my-1">
-        <input
-          name="organization"
-          required
-          #organizationCtrl="ngModel"
-          [(ngModel)]="getAbsencePost.organization"
-          type="text"
-          class="form-control form-control-lg border-3 p-10 rounded-3"
-          id="organization"
-          autocomplete="on"
-          placeholder="Organisation"
-        />
       </div>
       <div class="form-group my-1">
         <input
@@ -205,6 +207,21 @@
     <div class="modal-body bg-dark text-white">
       <div class="form-group my-1">
         <select
+          #orga
+          name="orga"
+          id="orga"
+          class="form-select form-select-lg border-3 p-10 rounded-3"
+          required
+          [(ngModel)]="selectedValueOrganizationPut$"
+          [ngModelOptions]="{standalone: true}"
+        >
+          <option *ngFor="let o of organizations$" [ngValue]="o">
+            {{o.name}}
+          </option>
+        </select>
+      </div>
+      <div class="form-group my-1">
+        <select
           #type
           name="type"
           id="type"
@@ -237,19 +254,6 @@
         >
           Format de date invalide
         </p>
-      </div>
-      <div class="form-group my-1">
-        <input
-          name="organization"
-          required
-          #organizationCtrl="ngModel"
-          [(ngModel)]="getAbsencePut.organization"
-          type="text"
-          class="form-control form-control-lg border-3 p-10 rounded-3"
-          id="organization"
-          autocomplete="on"
-          placeholder="Organisation"
-        />
       </div>
       <div class="form-group my-1">
         <input
