@@ -53,58 +53,67 @@ public class CronService {
 	//last day of the month at 20h
 	@Scheduled(cron = "0 0 21 L * *")
 	public void cronHandlePaidHolidayThisYear() {
-		LOG.info("CRON : Handle Paid Holiday");
+		LOG.info("CRON-Start : Handle Paid Holiday");
 		List<Account> accounts = accountRepository.findAll();
+		LOG.info("Total number of accounts to be processed : "+accounts.size());
 		for(Account account :accounts) {
 			account.setPaidHolidayThisYear(account.getPaidHolidayThisYear()+2.08F);
 			accountRepository.save(account);
 		}
+		LOG.info("CRON-End : Handle Paid Holiday");
 	}
 	
 	//Last day of the year at 21h
 	@Scheduled(cron = "0 0 22 31 12 *")
 	public void cronHandleIncreasePaidHolidayThisYear() {
-		LOG.info("CRON : Handle Increase Paid Holiday");
+		LOG.info("CRON-Start : Handle Increase Paid Holiday");
 		List<Account> accounts = accountRepository.findAll();
+		LOG.info("Total number of accounts to be processed : "+accounts.size());
 		for(Account account :accounts) {
 			account.setPaidHolidayThisYear((float) Math.ceil(account.getPaidHolidayThisYear()));
 			accountRepository.save(account);
 		}
+		LOG.info("CRON-End : Handle Increase Paid Holiday");
 	}
 	
 	//First day of the year at 22h
 	@Scheduled(cron = "0 0 23 1 1 *")
 	public void cronHandleUnusedPaidHoliday() {
-		LOG.info("CRON : Handle Unused Paid Holiday");
+		LOG.info("CRON-Start : Handle Unused Paid Holiday");
 		List<Account> accounts = accountRepository.findAll();
+		LOG.info("Total number of accounts to be processed : "+accounts.size());
 		for(Account account :accounts) {
 			account.setPaidHolidayLastYear(absenceScoreHelper.calculateAbsenceScore(account).getPaidHolidayLastYearSolde() + account.getPaidHolidayThisYear());
 			account.setPaidHolidayThisYear(0F);
 			accountRepository.save(account);
 		}
+		LOG.info("CRON-End : Handle Unused Paid Holiday");
 	}
 	
 	//Once a day at 23h
 	@Scheduled(cron = "0 0 23 * * *")
 	public void cronHandleNightTreatment() {
-		LOG.info("CRON : Handle Night Treatment");
+		LOG.info("CRON-Start : Handle Night Treatment");
 		
 		//Absence Organization
 		List<Organization> organizations = organizationRepository.findAll();
-		LOG.info("CRON : Handle Absence Organization");
+		LOG.info("CRON-Start : Handle Absence Organization");
 		LOG.info("Total number of organizations to be processed : "+organizations.size());
 		for(Organization organization : organizations) {
 			HandleNightTreatmentAbsenceOrganization(organization);
 		}
+		LOG.info("CRON-End : Handle Absence Organization");
 		
 		//Absence Account
 		List<Account> accounts = accountRepository.findAll();
-		LOG.info("CRON : Handle Absence Account");
+		LOG.info("CRON-Start : Handle Absence Account");
 		LOG.info("Total number of accounts to be processed : "+accounts.size());
 		for(Account account : accounts) {
 			HandleNightTreatmentAbsence(account);
 		}
+		LOG.info("CRON-End : Handle Absence Account");
 		
+		LOG.info("CRON-End : Handle Night Treatment");
 	}
 	
 	public void HandleNightTreatmentAbsence(Account account) {
