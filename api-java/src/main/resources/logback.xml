@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<!-- redirection des logs vers la sortir Console Standard -->
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<withJansi>true</withJansi>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} %highlight(%-5level) [%-20(%thread)] %-40(%0.40logger{36}) : %highlight(%msg%n)</pattern>
+		</encoder>
+	</appender>
+	<appender name="SIZE_BASED_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>c:/Respire-logs/respire.log</file>
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<maxFileSize>1KB</maxFileSize>
+		</triggeringPolicy>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<fileNamePattern>c:/Respire-logs/respire-%i.log</fileNamePattern>
+			<minIndex>1</minIndex>
+			<maxIndex>3</maxIndex>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} %-5level [%-20(%thread)] %-40(%0.40logger{36}) : %msg%n</pattern>
+		</encoder>
+	</appender>
+	<!-- regle de logs par defaut. Ici : niveau INFO vers la sortie standard -->
+	<root level="INFO">
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="SIZE_BASED_FILE" />
+	</root>
+</configuration>

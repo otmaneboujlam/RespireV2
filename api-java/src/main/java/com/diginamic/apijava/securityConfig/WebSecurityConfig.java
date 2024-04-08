@@ -57,27 +57,13 @@ public class WebSecurityConfig {
 		
 		http.authorizeHttpRequests(
 				auth -> auth				 
-				//.requestMatchers(mvc.pattern(HttpMethod.GET, "rest/person")).permitAll()
 				.requestMatchers(mvc.pattern(HttpMethod.POST, "api/signup")).permitAll()
 				.requestMatchers(mvc.pattern(HttpMethod.POST, "api/signin")).permitAll()
-				//.requestMatchers(mvc.pattern(HttpMethod.GET, "admin")).hasRole("ADMIN")
 				.anyRequest().authenticated()
 			)
-			// Spring Security va valoriser un jeton stocké dans un cookie XSRF-TOKEN
-        	// Le client souhaitant effectuer une requête de modification (POST par exemple)
-        	// devra valoriser une entête HTTP "X-XSRF-TOKEN" avec le jeton.
 			.csrf(
 				csrf -> csrf.disable()
-//				csrf -> csrf
-//				.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-//				.csrfTokenRequestHandler(new XorCsrfTokenRequestAttributeHandler()::handle)
-//				//h2-console
-//				.ignoringRequestMatchers(PathRequest.toH2Console())
 			)
-//			.headers(
-//		        //h2-console
-//				headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
-//		     )
 			.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
 			//Cors configuration
 			.cors(cors -> cors.configurationSource(source))

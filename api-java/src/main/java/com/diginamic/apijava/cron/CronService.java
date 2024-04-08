@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,8 @@ import com.diginamic.apijava.repository.OrganizationRepository;
 @Service
 public class CronService {
 	
+	private final Logger LOG = LoggerFactory.getLogger(this.getClass());
+	
 	@Autowired
 	private AccountRepository accountRepository;
 	
@@ -49,7 +53,7 @@ public class CronService {
 	//last day of the month at 20h
 	@Scheduled(cron = "0 0 21 L * *")
 	public void cronHandlePaidHolidayThisYear() {
-		System.out.println("CRON : Handle Paid Holiday");
+		LOG.info("CRON : Handle Paid Holiday");
 		List<Account> accounts = accountRepository.findAll();
 		for(Account account :accounts) {
 			account.setPaidHolidayThisYear(account.getPaidHolidayThisYear()+2.08F);
@@ -60,7 +64,7 @@ public class CronService {
 	//Last day of the year at 21h
 	@Scheduled(cron = "0 0 22 31 12 *")
 	public void cronHandleIncreasePaidHolidayThisYear() {
-		System.out.println("CRON : Handle Increase Paid Holiday");
+		LOG.info("CRON : Handle Increase Paid Holiday");
 		List<Account> accounts = accountRepository.findAll();
 		for(Account account :accounts) {
 			account.setPaidHolidayThisYear((float) Math.ceil(account.getPaidHolidayThisYear()));
@@ -71,7 +75,7 @@ public class CronService {
 	//First day of the year at 22h
 	@Scheduled(cron = "0 0 23 1 1 *")
 	public void cronHandleUnusedPaidHoliday() {
-		System.out.println("CRON : Handle Unused Paid Holiday");
+		LOG.info("CRON : Handle Unused Paid Holiday");
 		List<Account> accounts = accountRepository.findAll();
 		for(Account account :accounts) {
 			account.setPaidHolidayLastYear(absenceScoreHelper.calculateAbsenceScore(account).getPaidHolidayLastYearSolde() + account.getPaidHolidayThisYear());
@@ -83,20 +87,20 @@ public class CronService {
 	//Once a day at 23h
 	@Scheduled(cron = "0 0 23 * * *")
 	public void cronHandleNightTreatment() {
-		System.out.println("CRON : Handle Night Treatment");
+		LOG.info("CRON : Handle Night Treatment");
 		
 		//Absence Organization
 		List<Organization> organizations = organizationRepository.findAll();
-		System.out.println("CRON : Handle Absence Organization");
-		System.out.println("Total number of organizations to be processed : "+organizations.size());
+		LOG.info("CRON : Handle Absence Organization");
+		LOG.info("Total number of organizations to be processed : "+organizations.size());
 		for(Organization organization : organizations) {
 			HandleNightTreatmentAbsenceOrganization(organization);
 		}
 		
 		//Absence Account
 		List<Account> accounts = accountRepository.findAll();
-		System.out.println("CRON : Handle Absence Account");
-		System.out.println("Total number of accounts to be processed : "+accounts.size());
+		LOG.info("CRON : Handle Absence Account");
+		LOG.info("Total number of accounts to be processed : "+accounts.size());
 		for(Account account : accounts) {
 			HandleNightTreatmentAbsence(account);
 		}
@@ -104,11 +108,11 @@ public class CronService {
 	}
 	
 	public void HandleNightTreatmentAbsence(Account account) {
-		System.out.println("Account to treat  : Account_Id = "+account.getId());
+		LOG.info("Account to treat  : Account_Id = "+account.getId());
 		List<Absence> absencesInitial = absenceRepository.findByAccountAndAbsenceStatus(account, AbsenceStatus.INITIALE);
 		Collections.sort(absencesInitial);
 		List<Absence> absencesThisYearInitial = absencesInitial.stream().filter(a -> a.getStartDate().getYear() == LocalDate.now().getYear()).toList();
-		System.out.println("Total number of absences to be processed : "+absencesThisYearInitial.size());
+		LOG.info("Total number of absences to be processed : "+absencesThisYearInitial.size());
 		if(absencesThisYearInitial.size() > 0) {
 			List<AbsenceOrganization> absencesOrganizationValidated = absenceOrganizationRepository.findByOrganizationAndAbsenceOrganizationStatus(account.getGroupe().getDepartment().getOrganization(), AbsenceOrganizationStatus.VALIDEE);
 			List<LocalDate> absencesOrganizationThisYearValidatedDate = absencesOrganizationValidated.stream().filter(a -> a.getDate().getYear() == LocalDate.now().getYear()).map(a -> a.getDate()).toList();
@@ -129,28 +133,28 @@ public class CronService {
 				if(absence.getStartDate().getDayOfWeek().equals(java.time.DayOfWeek.SATURDAY) || absence.getStartDate().getDayOfWeek().equals(java.time.DayOfWeek.SUNDAY)) {
 					absence.setAbsenceStatus(AbsenceStatus.REJETEE);
 					absenceRepository.save(absence);
-					System.out.println("Absence rejected because the start date or end date is a weekend : Absence_Id = "+absence.getId());
+					LOG.info("Absence rejected because the start date or end date is a weekend : Absence_Id = "+absence.getId());
 				}
 				else if(((absence.getAbsenceType().equals(AbsenceType.RTT_EMPLOYEE)) && (absenceScoreHelper.calculateAbsenceScore(account).getEmployeeRttSolde() < realDurationNumber)) || ((absence.getAbsenceType().equals(AbsenceType.CONGE_PAYE)) && ((absenceScoreHelper.calculateAbsenceScore(account).getPaidHolidayLastYearSolde() + absenceScoreHelper.calculateAbsenceScore(account).getPaidHolidayThisYearSolde()) < realDurationNumber))) {
 					absence.setAbsenceStatus(AbsenceStatus.REJETEE);
 					absenceRepository.save(absence);
-					System.out.println("Absence rejected because the number of RTT_EMPLOYEE or PAID_HOLIDAY remaining is insufficient : Absence_Id = "+absence.getId());
+					LOG.info("Absence rejected because the number of RTT_EMPLOYEE or PAID_HOLIDAY remaining is insufficient : Absence_Id = "+absence.getId());
 				}
 				else if(absencesOrganizationThisYearValidatedDate.contains(absence.getStartDate()) || absencesOrganizationThisYearValidatedDate.contains(absence.getEndDate())) {
 					absence.setAbsenceStatus(AbsenceStatus.REJETEE);
 					absenceRepository.save(absence);
-					System.out.println("Absence rejected because the start date or end date is a RTT_EMPLOYER or PUBLIC_HOLIDAY : Absence_Id = "+absence.getId());
+					LOG.info("Absence rejected because the start date or end date is a RTT_EMPLOYER or PUBLIC_HOLIDAY : Absence_Id = "+absence.getId());
 				}
 				else if(isOverLap(absence,absencesThisYearValidated,absencesThisYearWaitingValidation,absencesThisYearWaitingValidationNew)) {
 					absence.setAbsenceStatus(AbsenceStatus.REJETEE);
 					absenceRepository.save(absence);
-					System.out.println("Absence rejected because overlaps with another absence : Absence_Id = "+absence.getId());
+					LOG.info("Absence rejected because overlaps with another absence : Absence_Id = "+absence.getId());
 				}
 				else {
 					absence.setAbsenceStatus(AbsenceStatus.EN_ATTENTE_VALIDATION);
 					absenceRepository.save(absence);
 					absencesThisYearWaitingValidationNew.add(absence);
-					System.out.println("Absence waiting validation : Absence_Id = "+absence.getId());
+					LOG.info("Absence waiting validation : Absence_Id = "+absence.getId());
 				}	
 			}
 		}
@@ -221,11 +225,11 @@ public class CronService {
 	}
 
 	public void HandleNightTreatmentAbsenceOrganization(Organization organization) {
-		System.out.println("Organization to treat : Organization_Id = "+organization.getId());
+		LOG.info("Organization to treat : Organization_Id = "+organization.getId());
 		List<AbsenceOrganization> absencesOrganizationInitial = absenceOrganizationRepository.findByOrganizationAndAbsenceOrganizationStatus(organization, AbsenceOrganizationStatus.INITIALE);
 		Collections.sort(absencesOrganizationInitial);
 		List<AbsenceOrganization> absencesOrganizationThisYearInitial = absencesOrganizationInitial.stream().filter(a -> a.getDate().getYear() == LocalDate.now().getYear()).toList();
-		System.out.println("Total number of absencesOrganization to be processed : "+absencesOrganizationThisYearInitial.size());
+		LOG.info("Total number of absencesOrganization to be processed : "+absencesOrganizationThisYearInitial.size());
 		if(absencesOrganizationThisYearInitial.size() > 0) {
 			List<AbsenceOrganization> absencesOrganizationValidated = absenceOrganizationRepository.findByOrganizationAndAbsenceOrganizationStatus(organization, AbsenceOrganizationStatus.VALIDEE);
 			List<LocalDate> absencesOrganizationThisYearValidatedDate = absencesOrganizationValidated.stream().filter(a -> a.getDate().getYear() == LocalDate.now().getYear()).map(a -> a.getDate()).toList();
@@ -235,41 +239,41 @@ public class CronService {
 					if(absenceOrganization.getDate().getDayOfWeek().equals(java.time.DayOfWeek.SATURDAY) || absenceOrganization.getDate().getDayOfWeek().equals(java.time.DayOfWeek.SUNDAY)) {
 						absenceOrganization.setAbsenceOrganizationStatus(AbsenceOrganizationStatus.REJETEE);
 						absenceOrganizationRepository.save(absenceOrganization);
-						System.out.println("AbsenceOrganization rejected because the start date or end date is a weekend : AbsenceOrganization_Id = "+absenceOrganization.getId());
+						LOG.info("AbsenceOrganization rejected because the start date or end date is a weekend : AbsenceOrganization_Id = "+absenceOrganization.getId());
 					}
 					else if(absenceOrganizationScoreHelper.calculateAbsenceOrganizationScore(organization).getEmployerRttSolde() <= 0) {
 						absenceOrganization.setAbsenceOrganizationStatus(AbsenceOrganizationStatus.REJETEE);
 						absenceOrganizationRepository.save(absenceOrganization);
-						System.out.println("AbsenceOrganization rejected because the number of RTT_EMPLOYER remaining is insufficient : AbsenceOrganization_Id = "+absenceOrganization.getId());
+						LOG.info("AbsenceOrganization rejected because the number of RTT_EMPLOYER remaining is insufficient : AbsenceOrganization_Id = "+absenceOrganization.getId());
 					}
 					else if (absencesOrganizationThisYearValidatedDate.contains(absenceOrganization.getDate()) || absencesOrganizationThisYearValidatedDateNew.contains(absenceOrganization.getDate())) {
 						absenceOrganization.setAbsenceOrganizationStatus(AbsenceOrganizationStatus.REJETEE);
 						absenceOrganizationRepository.save(absenceOrganization);
-						System.out.println("AbsenceOrganization rejected because overlaps with another absence : AbsenceOrganization_Id = "+absenceOrganization.getId());
+						LOG.info("AbsenceOrganization rejected because overlaps with another absence : AbsenceOrganization_Id = "+absenceOrganization.getId());
 					}
 					else {
 						absenceOrganization.setAbsenceOrganizationStatus(AbsenceOrganizationStatus.VALIDEE);
 						absenceOrganizationRepository.save(absenceOrganization);
 						absencesOrganizationThisYearValidatedDateNew.add(absenceOrganization.getDate());
-						System.out.println("AbsenceOrganization validated : AbsenceOrganization_Id = "+absenceOrganization.getId());
+						LOG.info("AbsenceOrganization validated : AbsenceOrganization_Id = "+absenceOrganization.getId());
 					}
 				}
 				else if(absenceOrganization.getAbsenceOrganizationType().equals(AbsenceOrganizationType.JOUR_FERIE)) {
 					if(absenceOrganizationScoreHelper.calculateAbsenceOrganizationScore(organization).getPublicHolidaySolde() <= 0) {
 						absenceOrganization.setAbsenceOrganizationStatus(AbsenceOrganizationStatus.REJETEE);
 						absenceOrganizationRepository.save(absenceOrganization);
-						System.out.println("AbsenceOrganization rejected because the number of PUBLIC_HOLIDAY remaining is insufficient : AbsenceOrganization_Id = "+absenceOrganization.getId());
+						LOG.info("AbsenceOrganization rejected because the number of PUBLIC_HOLIDAY remaining is insufficient : AbsenceOrganization_Id = "+absenceOrganization.getId());
 					}
 					else if (absencesOrganizationThisYearValidatedDate.contains(absenceOrganization.getDate()) || absencesOrganizationThisYearValidatedDateNew.contains(absenceOrganization.getDate())) {
 						absenceOrganization.setAbsenceOrganizationStatus(AbsenceOrganizationStatus.REJETEE);
 						absenceOrganizationRepository.save(absenceOrganization);
-						System.out.println("AbsenceOrganization rejected because overlaps with another absenceOrganization : AbsenceOrganization_Id = "+absenceOrganization.getId());
+						LOG.info("AbsenceOrganization rejected because overlaps with another absenceOrganization : AbsenceOrganization_Id = "+absenceOrganization.getId());
 					}
 					else {
 						absenceOrganization.setAbsenceOrganizationStatus(AbsenceOrganizationStatus.VALIDEE);
 						absenceOrganizationRepository.save(absenceOrganization);
 						absencesOrganizationThisYearValidatedDateNew.add(absenceOrganization.getDate());
-						System.out.println("AbsenceOrganization validated : AbsenceOrganization_Id = "+absenceOrganization.getId());
+						LOG.info("AbsenceOrganization validated : AbsenceOrganization_Id = "+absenceOrganization.getId());
 					}
 				}
 			}
